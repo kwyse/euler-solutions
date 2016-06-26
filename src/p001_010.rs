@@ -91,3 +91,33 @@ fn p008() {
     let actual = *products.iter().max().unwrap();
     assert_eq!(23_514_624_000, actual);
 }
+
+#[test]
+fn p009() {
+    let is_triplet = |a, b, c| a*a + b*b == c*c;
+
+    let mut triplets: Vec<(u64, u64, u64)> = Vec::new();
+    let bound = 1000;
+    for i in 1..bound {
+        for j in i + 1..bound {
+            for k in j + 1..bound {
+                if is_triplet(i, j, k) {
+                    triplets.push((i, j, k));
+                }
+            }
+        }
+    }
+
+    let (a, b, c) = *triplets.iter()
+        .find(|&&(a, b, c)| a + b + c == bound).unwrap();
+    let actual = a * b * c;
+    assert_eq!(31_875_000, actual);
+}
+
+#[test]
+fn p010() {
+    let actual = ::PrimeSequence::new()
+        .take_while(|&i| i < 2_000_000)
+        .fold(0, |acc, i| acc + i);
+    assert_eq!(142_913_828_922, actual);
+}
