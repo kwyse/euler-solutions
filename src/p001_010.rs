@@ -31,3 +31,22 @@ fn p003() {
 
     assert_eq!(6857, actual);
 }
+
+#[test]
+fn p004() {
+    let is_palindrome = |string: &str| {
+        string.chars().zip(string.chars().rev()).all(|(c1, c2)| c1 == c2)
+    };
+
+    let mut palindromes: Vec<u32> = Vec::new();
+    for i in (900..1000).rev() {
+        for j in (900..1000).rev() {
+            if is_palindrome(&(i * j).to_string()) {
+                palindromes.push(i * j);
+            }
+        }
+    }
+
+    let actual = *palindromes.iter().max().unwrap();
+    assert_eq!(906609, actual);
+}
