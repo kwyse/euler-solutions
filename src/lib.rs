@@ -1,40 +1,84 @@
-pub fn p001() -> u64 {
-    (1..1000)
-        .filter(|i| (i % 3 == 0) || (i % 5 == 0))
-        .fold(0, |acc, i| acc + i)
-}
+//! Abstractions over Project Euler problems
 
-pub fn p002() -> u64 {
-    use std::u64;
+pub use fib::FibonacciSequence;
+pub use prime::PrimeSequence;
 
-    struct FibonacciSequence {
-        a: u64,
-        b: u64,
+mod p001_010;
+
+/// For dealing with a Fibonacci sequence
+mod fib {
+    use std::ops::Add;
+
+    pub struct FibonacciSequence<T> {
+        current: T,
+        next: T,
     }
 
-    impl FibonacciSequence {
-        fn new() -> Self {
-            FibonacciSequence { a: 0, b: 1 }
-        }
-    }
-
-    impl Iterator for FibonacciSequence {
-        type Item = u64;
-
-        fn next(&mut self) -> Option<u64> {
-            if self.b > u64::MAX {
-                None
-            } else {
-                let tmp = self.b;
-                self.b = self.a + self.b;
-                self.a = tmp;
-                Some(self.a)
+    impl<T: From<u8>> FibonacciSequence<T> {
+        pub fn new() -> Self {
+            FibonacciSequence {
+                current: T::from(0),
+                next: T::from(1)
             }
         }
     }
 
-    FibonacciSequence::new()
-        .take_while(|&i| i < 4_000_000)
-        .filter(|i| i % 2 == 0)
-        .fold(0, |acc, i| acc + i)
+    impl<T> Iterator for FibonacciSequence<T>
+        where T: Add<Output = T> + Copy {
+        type Item = T;
+
+        fn next(&mut self) -> Option<T> {
+            let new_next = self.next;
+            self.next = self.current + self.next;
+            self.current = new_next;
+            Some(self.current)
+        }
+    }
+}
+
+/// For dealing with prime numbers
+mod prime {
+    pub struct PrimeSequence {
+        current: u64,
+    }
+
+    impl PrimeSequence {
+        pub fn new() -> Self {
+            PrimeSequence { current: 2 }
+        }
+    }
+
+    impl Iterator for PrimeSequence {
+        type Item = u64;
+
+        fn next(&mut self) -> Option<u64> {
+            let not_prime = |i: &u64| !is_prime(i);
+            self.current = (self.current + 1..).skip_while(not_prime).next().unwrap();
+            Some(self.current)
+        }
+    }
+
+    pub fn is_prime(num: &u64) -> bool {
+        if *num == 2 || *num == 3 { true }
+        else {
+            let upper_bound = (*num as f64).sqrt() as u64 + 1;
+            !(2..upper_bound).any(|i| num % i == 0)
+        }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    #[test]
+    fn test_is_prime() {
+        use ::prime::is_prime;
+
+        assert_eq!(is_prime(&2), true);
+        assert_eq!(is_prime(&3), true);
+        assert_eq!(is_prime(&4), false);
+        assert_eq!(is_prime(&5), true);
+        assert_eq!(is_prime(&8), false);
+        assert_eq!(is_prime(&13), true);
+        assert_eq!(is_prime(&27), false);
+    }
 }
