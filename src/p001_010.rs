@@ -6,7 +6,7 @@ fn p001() {
         .filter(|i| (i % 3 == 0) || (i % 5 == 0))
         .fold(0, |acc, i| acc + i);
 
-    assert_eq!(233168, actual);
+    assert_eq!(233_168, actual);
 }
 
 #[test]
@@ -16,7 +16,7 @@ fn p002() {
         .filter(|i| i % 2 == 0)
         .fold(0, |acc, i| acc + i);
 
-    assert_eq!(4613732, actual);
+    assert_eq!(4_613_732, actual);
 }
 
 #[test]
@@ -48,5 +48,28 @@ fn p004() {
     }
 
     let actual = *palindromes.iter().max().unwrap();
-    assert_eq!(906609, actual);
+    assert_eq!(906_609, actual);
+}
+
+#[test]
+fn p005() {
+    let evenly_divisible = |i: &u64| (1..21).all(|j| *i % j == 0);
+    let actual = (2520..).step_by(20).find(evenly_divisible).unwrap();
+    assert_eq!(232_792_560, actual);
+}
+
+#[test]
+fn p006() {
+    let sum = |acc, i| acc + i;
+    let sum_of_squares = (1..101).map(|i| i * i).fold(0, &sum);
+    let square_of_sum = (1..101).fold(0u64, &sum).pow(2);
+
+    let actual = square_of_sum - sum_of_squares;
+    assert_eq!(25_164_150, actual);
+}
+
+#[test]
+fn p007() {
+    let actual = ::PrimeSequence::new().nth(10_000).unwrap();
+    assert_eq!(104_743, actual);
 }

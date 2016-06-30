@@ -1,5 +1,7 @@
 //! Abstractions over Project Euler problems
 
+#![feature(step_by)]
+
 pub use fib::FibonacciSequence;
 pub use prime::PrimeSequence;
 
@@ -28,9 +30,10 @@ mod fib {
         type Item = T;
 
         fn next(&mut self) -> Option<T> {
-            let new_next = self.next;
-            self.next = self.current + self.next;
-            self.current = new_next;
+            use std::mem;
+
+            let new_next = self.current + self.next;
+            self.current = mem::replace(&mut self.next, new_next);
             Some(self.current)
         }
     }
@@ -44,7 +47,7 @@ mod prime {
 
     impl PrimeSequence {
         pub fn new() -> Self {
-            PrimeSequence { current: 2 }
+            PrimeSequence { current: 1 }
         }
     }
 
@@ -70,6 +73,18 @@ mod prime {
 #[cfg(test)]
 mod test {
     #[test]
+    fn test_fib_sequence() {
+        let sequence: Vec<u64> = ::FibonacciSequence::new().take(6).collect();
+
+        assert_eq!(&1, sequence.get(0).unwrap());
+        assert_eq!(&1, sequence.get(1).unwrap());
+        assert_eq!(&2, sequence.get(2).unwrap());
+        assert_eq!(&3, sequence.get(3).unwrap());
+        assert_eq!(&5, sequence.get(4).unwrap());
+        assert_eq!(&8, sequence.get(5).unwrap());
+    }
+
+    #[test]
     fn test_is_prime() {
         use ::prime::is_prime;
 
@@ -80,5 +95,15 @@ mod test {
         assert_eq!(is_prime(&8), false);
         assert_eq!(is_prime(&13), true);
         assert_eq!(is_prime(&27), false);
+    }
+
+    #[test]
+    fn test_prime_sequence() {
+        let sequence: Vec<u64> = ::PrimeSequence::new().take(10_001).collect();
+
+        assert_eq!(&2, sequence.get(0).unwrap());
+        assert_eq!(&3, sequence.get(1).unwrap());
+        assert_eq!(&5, sequence.get(2).unwrap());
+        assert_eq!(&104_743, sequence.get(10_000).unwrap());
     }
 }
