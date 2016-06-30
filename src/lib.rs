@@ -6,6 +6,7 @@ pub use fib::FibonacciSequence;
 pub use prime::PrimeSequence;
 
 mod p001_010;
+mod resource;
 
 /// For dealing with a Fibonacci sequence
 mod fib {

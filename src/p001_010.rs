@@ -73,3 +73,21 @@ fn p007() {
     let actual = ::PrimeSequence::new().nth(10_000).unwrap();
     assert_eq!(104_743, actual);
 }
+
+#[test]
+fn p008() {
+    use resource::Resource;
+
+    let buffer: String = Resource::new().get("p008");
+    let mut products = Vec::new();
+    for i in 0..1000 - 13 {
+        products.push(buffer.chars()
+                      .skip(i).take(13)
+                      .map(|i| i.to_digit(10).unwrap() as u64)
+                      .fold(1, |acc, i| acc * i)
+        );
+    }
+
+    let actual = *products.iter().max().unwrap();
+    assert_eq!(23_514_624_000, actual);
+}
