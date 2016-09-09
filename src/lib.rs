@@ -4,8 +4,10 @@
 
 pub use fib::FibonacciSequence;
 pub use prime::PrimeSequence;
+pub use mat::Matrix;
 
 mod p001_010;
+mod p011_020;
 mod resource;
 
 /// For dealing with a Fibonacci sequence
@@ -67,6 +69,215 @@ mod prime {
         else {
             let upper_bound = (*num as f64).sqrt() as u64 + 1;
             !(2..upper_bound).any(|i| num % i == 0)
+        }
+    }
+}
+
+/// For dealing with matrices
+mod mat {
+    use std::str::FromStr;
+    use std::fmt::Debug;
+
+    pub enum Direction {
+        Right,
+        DownRight,
+        Down,
+        DownLeft,
+    }
+
+    #[derive(Debug, Clone, PartialEq)]
+    pub struct Matrix<T: FromStr> {
+        matrix: Vec<T>,
+        size_x: usize,
+        current: usize,
+        // current_x: usize,
+        // current_y: usize,
+    }
+
+    impl<E: Debug, T: FromStr<Err = E> + Copy> Matrix<T> {
+        pub fn new(matrix_str: &str) -> Self {
+            let matrix = matrix_str.parse::<Self>().unwrap();
+            matrix
+        }
+
+        pub fn get_n_adjacent_indexes(&self, index: usize, n: usize, direction: &Direction) -> Option<Vec<usize>> {
+            let mut vec = Vec::with_capacity(n);
+
+            match direction {
+                &Direction::Right => {
+                    let starting_row = index / self.size_x;
+                    for i in 1..n + 1 {
+                        let current_index = index + i;
+                        let current_row = current_index / self.size_x;
+
+                        if starting_row == current_row {
+                            vec.push(current_index);
+                        } else {
+                            break;
+                        }
+                    }
+
+                    match vec.len() == n {
+                        true => Some(vec),
+                        false => None,
+                    }
+                }
+
+                &Direction::DownRight => {
+                    let old_column = index % self.size_x;
+                    for i in 1..n + 1 {
+                        let current_index = index + (self.size_x * i) + i;
+
+                        let current_column = current_index % self.size_x;
+                        if current_column > old_column && self.matrix.get(current_index).is_some() {
+                            vec.push(current_index);
+                        } else {
+                            break;
+                        }
+                    }
+
+                    match vec.len() == n {
+                        true => Some(vec),
+                        false => None,
+                    }
+                }
+
+                &Direction::Down => {
+                    for i in 1..n + 1 {
+                        let current_index = index + (self.size_x * i);
+                        if self.matrix.get(current_index).is_some() {
+                            vec.push(current_index);
+                        } else {
+                            break;
+                        }
+                    }
+
+                    match vec.len() == n {
+                        true => Some(vec),
+                        false => None,
+                    }
+                }
+
+                &Direction::DownLeft => {
+                    let old_column = index % self.size_x;
+                    for i in 1..n + 1 {
+                        let current_index = index + (self.size_x * i) - i;
+
+                        let current_column = current_index % self.size_x;
+                        if current_column < old_column && self.matrix.get(current_index).is_some() {
+                            vec.push(current_index);
+                        } else {
+                            break;
+                        }
+                    }
+
+                    match vec.len() == n {
+                        true => Some(vec),
+                        false => None,
+                    }
+                }
+            }
+        }
+
+        pub fn get_elements(&self, indexes: Vec<usize>) -> Option<Vec<T>> {
+            let mut elements: Vec<T> = Vec::new();
+
+            for index in &indexes {
+                if let Some(element) = self.matrix.get(*index) {
+                    elements.push(*element);
+                }
+            }
+
+            match elements.len() == indexes.len() {
+                true => Some(elements),
+                false => None,
+            }
+        }
+    }
+
+    impl<T: FromStr + Copy> Iterator for Matrix<T> {
+        type Item = T;
+
+        fn next(&mut self) -> Option<Self::Item> {
+            let index = self.current;
+            self.current += 1;
+            self.matrix.get(index).map(|val| *val)
+        }
+    }
+
+    impl<T: FromStr + Copy> AsRef<Matrix<T>> for Matrix<T> {
+        fn as_ref(&self) -> &Matrix<T> {
+            self
+        }
+    }
+
+    impl<E: Debug, T: FromStr<Err = E>> FromStr for Matrix<T> {
+        type Err = E;
+
+        fn from_str(s: &str) -> Result<Matrix<T>, E> {
+            let size_x = s.lines()
+                .skip_while(|&line| line.is_empty())
+                // .skip_while(str::is_empty)
+                .next().unwrap_or_default()
+                .split_whitespace()
+                .count();
+
+            let vec = s.lines()
+                .flat_map(str::split_whitespace)
+                .map(str::parse::<T>)
+                .map(Result::unwrap)
+                .collect();
+
+            Ok(Matrix {
+                matrix: vec,
+                size_x: size_x,
+                current: 0,
+            })
+            // let flattened_matrix = s.lines()
+            //     .flat_map(str::split_whitespace)
+            //     .collect::<Vec<&str>>();
+
+            // let parsed_results = flattened_matrix.iter()
+            //     .map(|val| val.parse::<T>())
+            //     .collect::<Vec<Result<_, _>>>();
+
+            // if parsed_results.iter().any(|&item| item.is_err()) {
+            //     let r: Result<Matrix<T>, E> = *parsed_results.iter().find(|&&item| item.is_err()).unwrap();
+            //     r
+            // } else {
+            //     let vec = parsed_results.iter().map(|val| val.unwrap()).collect();
+            //     Ok(Matrix {
+            //         matrix: vec,
+            //         size_x: size_x,
+            //     })
+            // }
+
+            // let mut all_parsed = true;
+
+            // for val in s.lines().flat_map() {
+            //     try!(j
+            //parsed_results.iter().find(move |item| item.is_err()).unwrap_or_else(|_|
+            // parsed_results.find(|item| item == Err(_)).unwrap_or_else(|item| {
+
+            // if flattened_matrix.len() != parsed_results.len() {
+            //     parsed_results.find(|item| item == Err(_)).unwrap().err().unwrap()
+            // } else {
+
+
+
+            // let matrix = s.lines().flat_map(|val| {
+            //     val.parse::<T>().unwrap_or_else(|err| 
+
+            // let matrix = s.lines().map(|line| {
+            //     line.split_whitespace().map(|val| {
+            //         val.parse::<T>().unwrap(|err| {
+            //             all_parsed = false;
+            //             T::default()
+            //         })
+            //     }).collect()
+            // }).collect();
+
+            // Ok(Matrix { matrix: matrix })
         }
     }
 }
