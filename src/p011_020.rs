@@ -21,5 +21,22 @@ fn p011() {
         }
     }
 
-    assert_eq!(&70600674, products.iter().max().unwrap());
+    assert_eq!(&70_600_674, products.iter().max().unwrap());
+}
+
+#[test]
+fn p012() {
+    let divisors = |num: u64| {
+        let mut vec = (1..(num / 2 + 1)).filter(|i| num % i == 0).collect::<Vec<u64>>();
+        vec.push(num);
+        vec
+    };
+
+    let answer = ::TriangleSequence::new()
+        .map(|i| (i, divisors(i)))
+        .find(|&(_, ref divisors)| divisors.len() > 500)
+        .map(|(i, _)| i)
+        .unwrap();
+
+    assert_eq!(76_576_500, answer);
 }

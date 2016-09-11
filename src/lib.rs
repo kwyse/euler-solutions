@@ -5,6 +5,7 @@
 pub use fib::FibonacciSequence;
 pub use prime::PrimeSequence;
 pub use mat::Matrix;
+pub use tri::TriangleSequence;
 
 mod p001_010;
 mod p011_020;
@@ -93,6 +94,9 @@ mod mat {
     }
 
     impl<E: Debug, T: FromStr<Err = E> + Copy> Matrix<T> {
+        /// Returns the specified number of adjacent indexes in a given direction
+        /// from a given index, not including that index, or None a matrix
+        /// boundary is hit.
         pub fn adjacent_indexes(&self, index: usize, num_items: usize, direction: &Direction) -> Option<Vec<usize>> {
             match direction {
                 &Direction::Right => {
@@ -106,7 +110,7 @@ mod mat {
                 &Direction::DownRight => {
                     map_condition(
                         |i| index + (self.size * i) + i,
-                        |&i| (i % self.size) > index % self.size && self.items.get(i).is_some(),
+                        |&i| (i % self.size) > (index % self.size) && self.items.get(i).is_some(),
                         num_items
                     )
                 }
@@ -122,7 +126,7 @@ mod mat {
                 &Direction::DownLeft => {
                     map_condition(
                         |i| index + (self.size * i) - i,
-                        |&i| (i % self.size) < index % self.size && self.items.get(i).is_some(),
+                        |&i| (i % self.size) < (index % self.size) && self.items.get(i).is_some(),
                         num_items
                     )
                 }
@@ -196,6 +200,9 @@ mod mat {
         }
     }
 
+    /// Returns the specified number of indexes according to the movement
+    /// operation specified by `map` and the boundary condition specified by
+    /// `condition`, or None if this condition is not satisfied for all items.
     fn map_condition<M, C>(map: M, condition: C, num_items: usize) -> Option<Vec<usize>>
         where M: FnMut(usize) -> usize, C: FnMut(&usize) -> bool {
 
@@ -207,6 +214,37 @@ mod mat {
         match indexes.len() == num_items {
             true => Some(indexes),
             false => None,
+        }
+    }
+}
+
+/// For dealing with triandgle numbers
+mod tri{
+    use std::ops::{Add, AddAssign};
+
+    pub struct TriangleSequence<T> {
+        current_value: T,
+        count: T,
+    }
+
+    impl<T: From<u64>> TriangleSequence<T> {
+        pub fn new() -> Self {
+            TriangleSequence {
+                current_value: T::from(1),
+                count: T::from(1),
+            }
+        }
+    }
+
+    impl<T: Add<Output = T> + AddAssign + From<u64> + Copy> Iterator for TriangleSequence<T> {
+        type Item = T;
+
+        fn next(&mut self) -> Option<T> {
+            let old_value = self.current_value;
+            self.current_value = old_value + self.count + T::from(1);
+            self.count += T::from(1);
+
+            Some(old_value)
         }
     }
 }
@@ -297,5 +335,15 @@ mod test {
 
         assert_eq!(Some(vec![20, 51]), mat.items_at_indexes(vec![4, 8]));
         assert_eq!(None, mat.items_at_indexes(vec![1, 4, 7, 10]));
+    }
+
+    #[test]
+    fn test_triangle_sequence() {
+        let sequence = ::TriangleSequence::new().take(7).collect::<Vec<u64>>();
+
+        assert_eq!(1, sequence[0]);
+        assert_eq!(3, sequence[1]);
+        assert_eq!(6, sequence[2]);
+        assert_eq!(28, sequence[6]);
     }
 }
