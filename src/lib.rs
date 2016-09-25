@@ -9,7 +9,9 @@ pub use tri::TriangleSequence;
 
 mod p001_010;
 mod p011_020;
+mod p013;
 mod resource;
+mod util;
 
 /// For dealing with a Fibonacci sequence
 mod fib {
