@@ -6,10 +6,12 @@ pub use fib::FibonacciSequence;
 pub use prime::PrimeSequence;
 pub use mat::Matrix;
 pub use tri::TriangleSequence;
+pub use collatz::CollatzSequence;
 
 mod p001_010;
 mod p011_020;
 mod p013;
+mod p014;
 mod resource;
 mod util;
 
@@ -251,6 +253,42 @@ mod tri{
     }
 }
 
+/// Collatz conjecture
+mod collatz {
+    use std::ops::{Add, Div, Mul, Rem};
+
+    pub struct CollatzSequence<T> {
+        current: T,
+    }
+
+    impl<T> CollatzSequence<T> {
+        pub fn new(first: T) -> Self {
+            CollatzSequence {
+                current: first
+            }
+        }
+    }
+
+    impl<T> Iterator for CollatzSequence<T>
+        where T: From<u8> + Copy + Add<Output = T> + Div<Output = T> + Mul<Output = T> + Rem<Output = T> + PartialEq {
+        type Item = T;
+
+        fn next(&mut self) -> Option<T> {
+            if self.current == T::from(1) {
+                None
+            } else {
+                if self.current % T::from(2) == T::from(0) {
+                    self.current = self.current / T::from(2);
+                } else {
+                    self.current = self.current * T::from(3) + T::from(1);
+                }
+
+                Some(self.current)
+            }
+        }
+    }
+}
+
 #[cfg(test)]
 mod test {
     #[test]
@@ -347,5 +385,11 @@ mod test {
         assert_eq!(3, sequence[1]);
         assert_eq!(6, sequence[2]);
         assert_eq!(28, sequence[6]);
+    }
+
+    #[test]
+    fn test_collatz_sequence() {
+        let sequence = ::CollatzSequence::new(13);
+        assert_eq!(9, sequence.count());
     }
 }
