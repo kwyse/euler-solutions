@@ -7,6 +7,7 @@ pub use prime::PrimeSequence;
 pub use mat::Matrix;
 pub use tri::TriangleSequence;
 pub use collatz::CollatzSequence;
+pub use code::binomial as bi;
 
 mod p001_010;
 mod p011_020;
@@ -14,6 +15,8 @@ mod p013;
 mod p014;
 mod resource;
 mod util;
+mod code;
+mod problems;
 
 /// For dealing with a Fibonacci sequence
 mod fib {
