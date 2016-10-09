@@ -8,6 +8,7 @@ pub use mat::Matrix;
 pub use tri::TriangleSequence;
 pub use collatz::CollatzSequence;
 pub use code::binomial as bi;
+pub use code::util as ut;
 
 mod p001_010;
 mod p011_020;
