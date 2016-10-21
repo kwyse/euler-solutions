@@ -2,10 +2,10 @@
 
 #[test]
 fn p011() {
-    use resource::Resource;
     use mat::Direction;
+    use ut::resource;
 
-    let buffer: String = Resource::new().get_with_newlines("p011");
+    let buffer: String = resource::from_file("p011").unwrap();
     let matrix = buffer.parse::<::Matrix<u32>>().unwrap();
 
     let directions = [Direction::Right, Direction::DownRight, Direction::Down, Direction::DownLeft];

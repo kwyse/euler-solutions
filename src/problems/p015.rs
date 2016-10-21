@@ -1,5 +1,7 @@
-pub fn p015() -> u64 {
+#[allow(dead_code)]
+fn p015() -> u64 {
     use bi;
+
     bi::n_choose_k(40, 20).unwrap()
 }
 

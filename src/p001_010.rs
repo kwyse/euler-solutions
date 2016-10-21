@@ -76,10 +76,13 @@ fn p007() {
 
 #[test]
 fn p008() {
-    use resource::Resource;
+    use ut::resource;
 
-    let buffer: String = Resource::new().get("p008");
+    let resource = resource::from_file("p008").unwrap();
+    let buffer = resource.lines().collect::<String>();
+
     let mut products = Vec::new();
+
     for i in 0..1000 - 13 {
         products.push(buffer.chars()
                       .skip(i).take(13)

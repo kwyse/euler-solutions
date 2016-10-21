@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 fn p017() -> u32 {
     use ut::string::ToWords;
 

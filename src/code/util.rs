@@ -1,10 +1,36 @@
 //! Misc. utility functions
 
+/// Utility functions for resources stored in files
+pub mod resource {
+    use std::io;
+    use std::path::Path;
+
+    /// Reads a problem resource from disk
+    pub fn from_file<P: AsRef<Path>>(resource: P) -> Result<String, io::Error> {
+        use std::path::PathBuf;
+
+        let mut path = PathBuf::from("resources");
+        path.push(resource);
+
+        string_from_file(path)
+    }
+
+    fn string_from_file<P: AsRef<Path>>(path: P) -> Result<String, io::Error> {
+        use std::fs::File;
+        use std::io::Read;
+
+        let mut file = try!(File::open(path));
+        let mut contents = String::new();
+        try!(file.read_to_string(&mut contents));
+        Ok(contents)
+    }
+}
+
 /// Utility functions for strings or string slices
 pub mod string {
 
     /// Doubles an unsigned integer represented as a string
-
+    ///
     /// Iterates from the right side, doubling each individual character in
     /// turn and adding a carry when necessary. The string will grow by one
     /// if there is an outstanding carry.
@@ -128,6 +154,8 @@ pub mod string {
 #[cfg(test)]
 mod tests {
     use super::string::*;
+
+    // TODO: Add resource module tests
 
     #[test]
     fn test_double_num() {

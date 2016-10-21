@@ -1,6 +1,7 @@
 #[test]
 fn p013() {
-    let resource = ::util::resource_from_file("p013").unwrap();
+    use ut::resource;
+    let resource = resource::from_file("p013").unwrap();
 
     let answer: u64 = resource.lines()
         .map(|line| {

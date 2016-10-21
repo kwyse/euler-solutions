@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 fn p016() -> u32 {
     use ut::string;
 
