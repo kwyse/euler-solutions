@@ -4,10 +4,7 @@ fn p013() {
 
     let answer: u64 = resource.lines()
         .map(|line| {
-            String::from(
-                line.chars()
-                    .take(15)
-                    .collect::<Vec<char>>())
+            String::from(line.chars().take(15).collect::<String>())
                 .parse::<u64>()
                 .unwrap()
         })
