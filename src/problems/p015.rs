@@ -8,7 +8,7 @@ fn p015() -> u64 {
 #[cfg(test)]
 mod tests {
     #[test]
-    fn test_p015() {
-        assert_eq!(137846528820, super::p015());
+    fn test() {
+        assert_eq!(137_846_528_820, super::p015());
     }
 }
