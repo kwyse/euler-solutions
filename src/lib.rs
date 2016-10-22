@@ -10,9 +10,5 @@ pub use code::prime as prime;
 pub use code::triangle as tri;
 pub use code::util as ut;
 
-mod p001_010;
-mod p011_020;
-mod p013;
-mod p014;
 mod code;
 mod problems;
