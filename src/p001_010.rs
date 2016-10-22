@@ -21,10 +21,12 @@ fn p002() {
 
 #[test]
 fn p003() {
+    use prime::PrimeSequence;
+
     let target: u64 = 600851475143;
     let upper_bound = (target as f64).sqrt() as u64;
 
-    let actual = ::PrimeSequence::new()
+    let actual = PrimeSequence::new()
         .take_while(|&i| i < upper_bound)
         .filter(|i| target % i == 0)
         .max().unwrap();
@@ -70,7 +72,9 @@ fn p006() {
 
 #[test]
 fn p007() {
-    let actual = ::PrimeSequence::new().nth(10_000).unwrap();
+    use prime::PrimeSequence;
+
+    let actual = PrimeSequence::new().nth(10_000).unwrap();
     assert_eq!(104_743, actual);
 }
 
@@ -119,7 +123,9 @@ fn p009() {
 
 #[test]
 fn p010() {
-    let actual = ::PrimeSequence::new()
+    use prime::PrimeSequence;
+
+    let actual = PrimeSequence::new()
         .take_while(|&i| i < 2_000_000)
         .fold(0, |acc, i| acc + i);
     assert_eq!(142_913_828_922, actual);
