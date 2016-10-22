@@ -1,6 +1,6 @@
 //! For dealing with prime numbers
 
-/// Represents a iterative sequence of prime numbers
+/// Represents an iterative sequence of prime numbers
 pub struct PrimeSequence {
     current: u64,
 }

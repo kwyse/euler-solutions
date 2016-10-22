@@ -11,7 +11,9 @@ fn p001() {
 
 #[test]
 fn p002() {
-    let actual = ::FibonacciSequence::new()
+    use fib::FibonacciSequence;
+
+    let actual = FibonacciSequence::new()
         .take_while(|&i| i < 4_000_000)
         .filter(|i| i % 2 == 0)
         .fold(0, |acc, i| acc + i);

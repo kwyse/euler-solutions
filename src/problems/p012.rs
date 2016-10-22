@@ -1,6 +1,7 @@
 #[allow(dead_code)]
 fn p012() -> u64 {
     use prime;
+    use tri::TriangleSequence;
 
     let num_divisors = |n: u64| {
         prime::factors(n).iter()
@@ -9,7 +10,7 @@ fn p012() -> u64 {
             .fold(1, |acc, d| acc * d)
     };
 
-    ::TriangleSequence::new()
+    TriangleSequence::new()
         .map(|i| (i, num_divisors(i)))
         .find(|&(_, ref num_divisors)| num_divisors > &500)
         .map(|(i, _)| i)
