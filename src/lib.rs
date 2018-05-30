@@ -1,6 +1,8 @@
 //! Abstractions over Project Euler problems
 
-#![feature(step_by)]
+#![allow(dead_code)]
+#![feature(iterator_step_by)]
+
 
 pub use code::binomial as bi;
 pub use code::collatz as collatz;
