@@ -2,7 +2,7 @@
 fn p002() -> u64 {
     use fib::FibonacciSequence;
 
-    FibonacciSequence::new()
+    FibonacciSequence::<u64>::new()
         .take_while(|&i| i < 4_000_000)
         .filter(|i| i % 2 == 0)
         .fold(0, |acc, i| acc + i) as u64

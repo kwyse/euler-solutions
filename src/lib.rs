@@ -3,6 +3,8 @@
 #![allow(dead_code)]
 #![feature(iterator_step_by)]
 
+extern crate kb;
+extern crate num;
 
 pub use code::binomial as bi;
 pub use code::collatz as collatz;
