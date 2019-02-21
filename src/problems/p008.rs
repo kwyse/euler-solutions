@@ -1,27 +1,9 @@
-#[allow(dead_code)]
-fn p008() -> u64 {
-    use ut::resource;
+//! Problem 8: Largest product in a series
 
-    let resource = resource::from_file("p008").unwrap();
-    let buffer = resource.lines().collect::<String>();
-
-    let mut products = Vec::new();
-
-    for i in 0..1000 - 13 {
-        products.push(buffer.chars()
-                      .skip(i).take(13)
-                      .map(|i| i.to_digit(10).unwrap() as u64)
-                      .fold(1, |acc, i| acc * i)
-        );
-    }
-
-    *products.iter().max().unwrap()
-}
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn test() {
-        assert_eq!(23_514_624_000, super::p008());
-    }
-}
+solve!(expecting_answer: 23_514_624_000, with: || {
+    include_str!("../../resources/p008")
+        .lines().collect::<Vec<_>>().concat()
+        .chars().filter_map(|c| c.to_digit(10)).collect::<Vec<_>>().windows(13)
+        .map(|window| window.iter().map(|&n| n as u64).product::<u64>())
+        .max().unwrap_or(0) as u128
+});
