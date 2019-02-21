@@ -14,5 +14,16 @@ pub use code::prime as prime;
 pub use code::triangle as tri;
 pub use code::util as ut;
 
+#[macro_export]
+macro_rules! solve {
+    (expecting_answer: $expected:expr, with: $solution:expr) => {
+        #[test]
+        fn test() {
+            let actual: u128 = $solution();
+            assert_eq!(actual, $expected);
+        }
+    }
+}
+
 mod code;
 mod problems;
