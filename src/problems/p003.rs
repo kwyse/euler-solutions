@@ -1,20 +1,16 @@
-#[allow(dead_code)]
-fn p003() -> u64 {
-    use prime::PrimeSequence;
+//! Problem 3: Largest prime factor
 
-    let target: u64 = 600851475143;
-    let upper_bound = (target as f64).sqrt() as u64;
+solve!(expecting_answer: 6857, with: || {
+    let mut target = 600_851_475_143;
+    let mut generator = (2..3).chain((3..target).step_by(2));
+    let limit = |n| (n as f64).sqrt() as u128;
 
-    PrimeSequence::new()
-        .take_while(|&i| i < upper_bound)
-        .filter(|i| target % i == 0)
-        .max().unwrap()
-}
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn test() {
-        assert_eq!(6857, super::p003());
+    let mut last_factor = 2;
+    while let Some(factor) = generator.next().filter(|&n| n <= limit(target)) {
+        while target % factor == 0 { target /= factor }
+        last_factor = factor;
     }
-}
+
+    if target == 1 { last_factor }
+    else { target }
+});

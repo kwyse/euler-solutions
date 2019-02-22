@@ -1,31 +1,23 @@
-#[allow(dead_code)]
-fn p011() -> u64 {
-    use mat::{Direction, Matrix};
-    use ut::resource;
+//! Problem 11: Largest product in a grid
 
-    let buffer: String = resource::from_file("p011").unwrap();
-    let matrix = buffer.parse::<Matrix<u32>>().unwrap();
+solve!(expecting_answer: 70_600_674, with: || {
+    let grid = include_str!("../../resources/p011")
+        .split_whitespace()
+        .filter_map(|s| s.parse::<u32>().ok())
+        .collect::<Vec<_>>();
 
-    let directions = [Direction::Right, Direction::DownRight, Direction::Down, Direction::DownLeft];
-    let mut products: Vec<u32> = Vec::new();
-
-    for (index, item) in matrix.clone().enumerate() {
-        for direction in &directions {
-            if let Some(adjacent_indexes) = matrix.as_ref().adjacent_indexes(index, 3, direction) {
-                if let Some(adjacent_items) = matrix.items_at_indexes(adjacent_indexes) {
-                    products.push(adjacent_items.iter().product::<u32>() * item);
-                }
-            }
-        }
+    fn product(grid: &[u32], indices: impl Iterator<Item = usize>) -> u32 {
+        indices.map(|i| grid[i]).product::<u32>()
     }
 
-    products.iter().max().unwrap().clone() as u64
-}
+    let right = |i| product(&grid, i..i + 4);
+    let down = |i| product(&grid, (0..4).map(|j| i + j * 20));
+    let down_right = |i| product(&grid, (0..4).map(|j| (i + j) + j * 20));
+    let down_left = |i| product(&grid, (0..4).map(|j| (i - j) + j * 20));
 
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn test() {
-        assert_eq!(70_600_674, super::p011());
-    }
-}
+    (0..=(20 * 16)).map(|i| match i % 20 {
+        0...3 => right(i).max(down(i)).max(down_right(i)),
+        16...19 => down(i).max(down_left(i)),
+        _ => right(i).max(down(i)).max(down_right(i)).max(down_left(i))
+    }).max().unwrap_or(0) as u128
+});
