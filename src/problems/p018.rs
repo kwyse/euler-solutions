@@ -1,38 +1,21 @@
-// Find the maximum total from top to bottom of the triangle.
+// Problem 18: Maximum path sum I
 
-const TEST_INPUT: &str = "
-3
-7 4
-2 4 6
-8 5 9 3
-";
+solve!(expecting_answer: 1074, with: || {
+    fn deserialize(input: &str) -> Vec<Vec<u32>> {
+        input.lines().map(str_line_to_u32s).collect()
+    }
 
-const PROBLEM_INPUT: &str = "
-75
-95 64
-17 47 82
-18 35 87 10
-20 04 82 47 65
-19 01 23 75 03 34
-88 02 77 73 07 63 67
-99 65 04 28 06 16 70 92
-41 41 26 56 83 40 80 70 33
-41 48 72 33 47 32 37 16 94 29
-53 71 44 65 25 43 91 52 97 51 14
-70 11 33 28 77 73 17 78 39 68 17 57
-91 71 52 38 17 14 91 43 58 50 27 29 48
-63 66 04 68 89 53 67 30 73 16 69 87 40 31
-04 62 98 27 23 09 70 98 73 93 38 53 60 04 23
-";
+    fn str_line_to_u32s(line: &str) -> Vec<u32> {
+        line.split_whitespace().filter_map(parse_u32).collect()
+    }
 
-#[test]
-fn test() { assert_eq!(p018(&deserialize(TEST_INPUT)), 23) }
-#[test]
-fn problem() { assert_eq!(p018(&deserialize(PROBLEM_INPUT)), 1074) }
+    fn parse_u32(num: &str) -> Option<u32> {
+        str::parse(num).ok()
+    }
 
-fn p018(triangle: &[Vec<u32>]) -> u32 {
     let mut prev = vec![0, 0];
 
+    let triangle = deserialize(include_str!("../../resources/p018"));
     for line in triangle {
         let mut curr = vec![0];
 
@@ -44,17 +27,5 @@ fn p018(triangle: &[Vec<u32>]) -> u32 {
         prev = curr
     }
 
-    prev.iter().max().map(Clone::clone).unwrap_or(0)
-}
-
-fn deserialize(input: &str) -> Vec<Vec<u32>> {
-    input.lines().map(str_line_to_u32s).collect()
-}
-
-fn str_line_to_u32s(line: &str) -> Vec<u32> {
-    line.split_whitespace().filter_map(parse_u32).collect()
-}
-
-fn parse_u32(num: &str) -> Option<u32> {
-    str::parse(num).ok()
-}
+    prev.iter().max().map(Clone::clone).unwrap_or(0) as u128
+});
