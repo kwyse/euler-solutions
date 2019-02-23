@@ -1,14 +1,10 @@
-#[allow(dead_code)]
-fn p015() -> u64 {
-    use bi;
+//! Problem 15: Lattice paths
 
-    bi::n_choose_k(40, 20).unwrap()
-}
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn test() {
-        assert_eq!(137_846_528_820, super::p015());
+solve!(expecting_answer: 137_846_528_820, with: || {
+    let mut paths: u128 = 1;
+    for i in 0..20 {
+        paths = paths * (40 - i) / (i + 1);
     }
-}
+
+    paths
+});
