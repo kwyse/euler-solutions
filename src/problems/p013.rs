@@ -1,23 +1,10 @@
-#[allow(dead_code)]
-fn p013() -> u64 {
-    use ut::resource;
-    let resource = resource::from_file("p013").unwrap();
+//! Problem 13: Large sum
 
-    let answer: u64 = resource.lines()
-        .map(|line| {
-            String::from(line.chars().take(15).collect::<String>())
-                .parse::<u64>()
-                .unwrap()
-        })
-        .sum();
+solve!(expecting_answer: 5_537_376_230, with: || {
+    let sum = include_str!("../../resources/p013").lines()
+        .filter_map(|line| line.chars().take(11).collect::<String>()
+             .parse::<u64>().ok()
+         ).sum::<u64>();
 
-    answer.to_string()[0..10].parse::<u64>().unwrap()
-}
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn test() {
-        assert_eq!(5_537_376_230, super::p013());
-    }
-}
+    (sum / 10_u64.pow((sum as f64).log10() as u32 - 9)) as u128
+});
