@@ -5,7 +5,7 @@ macro_rules! solve {
     (expecting_answer: $expected:expr, with: $solution:expr) => {
         #[test]
         fn test() {
-            let actual: u128 = $solution();
+            let actual: u128 = $solution().into();
             assert_eq!(actual, $expected);
         }
     }
