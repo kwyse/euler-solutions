@@ -1,20 +1,7 @@
 //! Problem 25: 1000-digit Fibonacci number
 
-use bigint::BigInt;
-use fib::FibonacciSequence;
-
 solve!(expecting_answer: 4782, with: || {
-    FibonacciSequence(BigInt(vec![1]), BigInt(vec![1]))
-        .enumerate()
-        .find(|(_, n)| n.num_digits() >= 1000)
-        .map(|(i, _)| i + 1)
-        .unwrap_or(0)
-});
-
-mod fib {
-    use super::bigint::BigInt;
-
-    pub struct FibonacciSequence(pub BigInt, pub BigInt);
+    struct FibonacciSequence(BigInt, BigInt);
 
     impl Iterator for FibonacciSequence {
         type Item = BigInt;
@@ -27,16 +14,14 @@ mod fib {
             Some(current)
         }
     }
-}
 
-mod bigint {
     const LIMIT: u128 = 1_000_000_000_000_000_000_000_000_000_000_000_000;
 
     #[derive(Clone)]
-    pub struct BigInt(pub Vec<u128>);
+    pub struct BigInt(Vec<u128>);
 
     impl BigInt {
-        pub fn add(&self, other: &Self) -> Self {
+        fn add(&self, other: &Self) -> Self {
             let mut carry = 0;
             let mut result = Vec::new();
             for i in 0..self.0.len() {
@@ -52,8 +37,14 @@ mod bigint {
             BigInt(result)
         }
 
-        pub fn num_digits(&self) -> usize {
+        fn num_digits(&self) -> usize {
             self.0.iter().map(|&m| ((m as f64).log10() as usize) + 1).sum()
         }
     }
-}
+
+    FibonacciSequence(BigInt(vec![1]), BigInt(vec![1]))
+        .enumerate()
+        .find(|(_, n)| n.num_digits() >= 1000)
+        .map(|(i, _)| i + 1)
+        .unwrap_or(0)
+});
