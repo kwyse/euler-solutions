@@ -1,19 +1,36 @@
 //! Problem 23: Non-abundant sums
 
-solve!(expecting_answer: 4_179_871, with: || {
-    use std::collections::HashSet;
+fn solution() -> usize {
+    const LIMIT: usize = 28_123;
 
-    let divisors = |n| (1..(n / 2 + 1))
-        .filter(|m| n % m == 0)
+    let abundants = (1..=LIMIT).filter(is_abundant).collect::<Vec<_>>();
+    let mut should_include_in_sum = [true; LIMIT + 1];
+
+    for (i, a) in abundants.iter().enumerate() {
+        for b in &abundants[i..] {
+            if a + b <= LIMIT {
+                should_include_in_sum[a + b] = false
+            }
+        }
+    }
+
+    (1..=LIMIT).filter(|&i| should_include_in_sum[i]).sum()
+}
+
+fn is_abundant(n: &usize) -> bool {
+    let divisors = (1..(*n as f32).sqrt() as usize + 1)
+        .filter(move |m| n % m == 0)
         .collect::<Vec<_>>();
 
-    let abundant_numbers = (1..=28_123)
-        .filter(|&n| divisors(n).iter().sum::<u32>() > n)
-        .collect::<HashSet<u32>>();
+    let mut sum = divisors.iter().sum::<usize>();
+    for divisor in divisors.iter().skip(1).rev().skip_while(|&&m| m * m == *n) {
+        sum += n / divisor;
+    }
 
-    (1..28_123).filter(|n: &u32| {
-        !abundant_numbers.iter().any(|&m: &_|
-            abundant_numbers.get(&(n.checked_sub(m).unwrap_or(0))).is_some()
-        )
-    }).sum::<u32>()
-});
+    sum > *n
+}
+
+#[test]
+fn test() {
+    assert_eq!(solution(), 4_179_871);
+}
