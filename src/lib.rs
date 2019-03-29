@@ -8,7 +8,7 @@ macro_rules! solve {
             let actual = $solution();
             assert_eq!(actual, $expected);
         }
-    }
+    };
 }
 
-mod problems;
+pub mod problems;

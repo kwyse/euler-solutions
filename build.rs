@@ -18,11 +18,10 @@ fn mod_contents() -> io::Result<String> {
     for entry in fs::read_dir(PROBLEMS_DIR)? {
         let entry = entry?;
         let mod_path = entry.path();
-        let mod_name = mod_path.file_stem().unwrap()
-            .to_str().unwrap();
+        let mod_name = mod_path.file_stem().unwrap().to_str().unwrap();
 
         if mod_name != "mod" {
-            writeln!(&mut contents, "mod {};", mod_name).unwrap();
+            writeln!(&mut contents, "pub mod {};", mod_name).unwrap();
         }
     }
 

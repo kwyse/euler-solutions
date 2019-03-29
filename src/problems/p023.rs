@@ -1,6 +1,6 @@
 //! Problem 23: Non-abundant sums
 
-fn solution() -> usize {
+pub fn solution() -> usize {
     const LIMIT: usize = 28_123;
 
     let abundants = (1..=LIMIT).filter(is_abundant).collect::<Vec<_>>();
