@@ -13,4 +13,3 @@ solve!(expecting_answer: 871_198_282, with: || {
                 .sum::<u32>() as u128 * (i as u128 + 1)
     }).sum::<u128>()
 });
-

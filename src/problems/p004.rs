@@ -1,7 +1,10 @@
 #[allow(dead_code)]
 fn p004() -> u64 {
     let is_palindrome = |string: &str| {
-        string.chars().zip(string.chars().rev()).all(|(c1, c2)| c1 == c2)
+        string
+            .chars()
+            .zip(string.chars().rev())
+            .all(|(c1, c2)| c1 == c2)
     };
 
     let mut palindromes: Vec<u32> = Vec::new();

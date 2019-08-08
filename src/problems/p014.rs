@@ -1,39 +1,55 @@
 //! Problem 14: Longest Collatz sequence
 
-solve!(expecting_answer: 837_799, with: || {
-    use std::collections::HashMap;
+use std::collections::HashMap;
 
-    struct CollatzSequence(Option<u64>);
-    impl Iterator for CollatzSequence {
-        type Item = u64;
+pub fn solution() -> usize {
+    let mut cache = CollatzLengthCache {
+        cache: [(1, 1)].iter().cloned().collect::<HashMap<_, _>>(),
+    };
 
-        fn next(&mut self) -> Option<u64> {
-            let curr = self.0;
-            self.0 = self.0.filter(|&n| n != 1)
-                .map(|n| if n % 2 == 0 { n/2 } else { 3*n + 1 });
-
-            curr
+    let mut max = 0;
+    for n in 500_000..1_000_000 {
+        let len = cache.len(n);
+        if len > max {
+            max = len;
         }
     }
 
-    let mut seq_lengths = HashMap::new();
-    for i in 500_000..1_000_000 {
-        let mut seq = CollatzSequence(Some(i));
+    max
+}
+
+struct CollatzLengthCache {
+    cache: HashMap<usize, usize>,
+}
+
+impl CollatzLengthCache {
+    fn len(&mut self, n: usize) -> usize {
         let mut len = 0;
+        let mut current = n;
+        let mut visited = Vec::new();
 
-        while let Some(next) = seq.next() {
-            if let Some(found_len) = seq_lengths.get(&next) {
-                seq_lengths.insert(i, len + found_len);
-                break;
-            } else {
-                len += 1;
-            }
+        while !self.cache.contains_key(&current) {
+            current = match current % 2 {
+                0 => n / 2,
+                _ => 3*n + 1,
+            };
+
+            visited.push(current);
+            len += 1;
         }
 
-        seq_lengths.entry(i).or_insert(len);
-    }
+        let found_len = self.cache[&current];
+        let mut l = 0;
+        for v in visited.iter().rev() {
+            self.cache.insert(*v, found_len + l);
+            l += 1;
+        }
 
-    seq_lengths.iter()
-        .max_by_key(|&(_, v): &(&u64, &usize)| *v).map(|(&k, _)| k)
-        .unwrap_or(0) as u128
-});
+        found_len + len
+    }
+}
+
+#[test]
+fn test() {
+    assert_eq!(solution(), 837_799);
+}
