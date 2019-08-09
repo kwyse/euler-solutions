@@ -9,7 +9,7 @@
 //! exceed four million, find the sum of the even-valued terms.
 
 pub fn sum_of_even_value_fibs(limit: u32) -> u32 {
-    FibIter::new()
+    FibIter::default()
         .take_while(|&n| n < limit)
         .filter(|n| n % 2 == 0)
         .sum()
@@ -17,8 +17,8 @@ pub fn sum_of_even_value_fibs(limit: u32) -> u32 {
 
 pub struct FibIter(u32, u32);
 
-impl FibIter {
-    pub fn new() -> Self {
+impl Default for FibIter {
+    fn default() -> Self {
         Self(1, 2)
     }
 }
@@ -29,7 +29,7 @@ impl Iterator for FibIter {
     fn next(&mut self) -> Option<Self::Item> {
         let curr = self.0;
         self.0 = self.1;
-        self.1 = self.1 + curr;
+        self.1 += curr;
 
         Some(curr)
     }
@@ -40,13 +40,13 @@ mod tests {
     use super::*;
 
     #[test]
-    fn sum_of_even_value_fibonacci_numbers_are_calculated() {
+    fn sum_of_even_value_fibonacci_numbers_is_calculated() {
         assert_eq!(sum_of_even_value_fibs(10), 10);
     }
 
     #[test]
     fn fibonacci_numbers_are_generated() {
-        let mut fibs = FibIter::new();
+        let mut fibs = FibIter::default();
 
         assert_eq!(fibs.next(), Some(1));
         assert_eq!(fibs.next(), Some(2));

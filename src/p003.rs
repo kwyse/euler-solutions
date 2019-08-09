@@ -36,11 +36,16 @@ mod tests {
 
     #[test]
     fn largest_prime_factor_is_calculated() {
-        assert_eq!(largest_prime_factor(600_851_475_143), 6_857);
+        assert_eq!(largest_prime_factor(13_195), 29);
     }
 
     #[test]
     fn prime_factors_are_calculated() {
         assert_eq!(prime_factors(13_195), [5, 7, 13, 29]);
+    }
+
+    #[test]
+    fn p003() {
+        assert_eq!(largest_prime_factor(600_851_475_143), 6_857);
     }
 }
