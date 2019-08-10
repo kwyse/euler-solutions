@@ -41,7 +41,6 @@ pub fn prime_factors(mut n: u64) -> Vec<u64> {
 
         factor += 2;
         limit = (n as f32).sqrt() as u64;
-
     }
 
     if n != 1 {

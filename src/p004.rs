@@ -36,12 +36,11 @@ pub fn largest_palindrome(lo: u32, hi: u32) -> u32 {
     let mut largest = 0;
 
     for x in (lo..=hi).rev() {
-        let mut y = hi;
-        let mut dy = 1;
-        if x % 11 != 0 {
-            y = hi / 11 * 11;
-            dy = 11;
-        }
+        let (mut y, dy) = if x % 11 == 0 {
+            (hi, 1)
+        } else {
+            (hi / 11 * 11, 11)
+        };
 
         while y >= x {
             let product = x * y;
