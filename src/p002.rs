@@ -8,28 +8,46 @@
 //! By considering the terms in the Fibonacci sequence whose values do not
 //! exceed four million, find the sum of the even-valued terms.
 
+/// Sums even-valued Fibonacci numbers up to a limit
 pub fn sum_of_even_value_fibs(limit: u32) -> u32 {
-    FibIter::default()
-        .take_while(|&n| n < limit)
-        .filter(|n| n % 2 == 0)
-        .sum()
+    EvenFibIter::default().take_while(|&n| n < limit).sum()
 }
 
-pub struct FibIter(u32, u32);
+/// Yields even-valued Fibonacci numbers
+///
+/// Observe that the Fibonacci sequence obeys F(_n_) = 4 * F(_n_ - 3) + F(_n_ - 6):
+///
+/// F(_n_)
+/// = F(_n_ - 1) + F(_n_ - 2)
+/// = F(_n_ - 2) + F(_n_ - 3) + F(_n_ - 2)
+/// = 2 * F(_n_ - 2) + F(_n_ - 3)
+/// = 2 * (F(_n_ - 3) + F(_n_ - 4)) + F(_n_ - 3)
+/// = 3 * F(_n_ - 3) + 2 * F(_n_ - 4)
+/// = 3 * F(_n_ - 3) + F(_n_ - 4) + F(_n_ - 5) + F(_n_ - 6)
+/// = 4 * F(_n_ - 3) + F(_n_ - 6)
+///
+/// Now, observe that every third value in the Fibonacci sequence is even:
+///
+/// 1 1 *2* 3 5 *8* 13 21 *34* 55 89 *144* ...
+///
+/// Therefore, if F(_n_) = 4 * F(_n_ - 3) + F(_n_ - 6) yields values of the
+/// Fibonacci sequence, then E(_n_) = 4 * E(_n_ - 1) + E(_n_ - 2) can be used to
+/// yield the even values.
+pub struct EvenFibIter(u32, u32);
 
-impl Default for FibIter {
+impl Default for EvenFibIter {
     fn default() -> Self {
-        Self(1, 2)
+        Self(2, 8)
     }
 }
 
-impl Iterator for FibIter {
+impl Iterator for EvenFibIter {
     type Item = u32;
 
     fn next(&mut self) -> Option<Self::Item> {
         let curr = self.0;
         self.0 = self.1;
-        self.1 += curr;
+        self.1 = 4 * self.1 + curr;
 
         Some(curr)
     }
@@ -45,15 +63,13 @@ mod tests {
     }
 
     #[test]
-    fn fibonacci_numbers_are_generated() {
-        let mut fibs = FibIter::default();
+    fn even_fibonacci_numbers_are_generated() {
+        let mut fibs = EvenFibIter::default();
 
-        assert_eq!(fibs.next(), Some(1));
         assert_eq!(fibs.next(), Some(2));
-        assert_eq!(fibs.next(), Some(3));
-        assert_eq!(fibs.next(), Some(5));
         assert_eq!(fibs.next(), Some(8));
-        assert_eq!(fibs.next(), Some(13));
+        assert_eq!(fibs.next(), Some(34));
+        assert_eq!(fibs.next(), Some(144));
     }
 
     #[test]
