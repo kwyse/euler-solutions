@@ -4,8 +4,8 @@
 //!
 //! What is the largest prime factor of the number 600851475143?
 
-pub fn largest_prime_factor(n: u64) -> u64 {
-    *prime_factors(n).iter().max().unwrap_or(&0)
+pub fn largest_prime_factor(n: u64) -> Option<u64> {
+    prime_factors(n).last().map(|&n| n)
 }
 
 pub fn prime_factors(mut n: u64) -> Vec<u64> {
@@ -36,7 +36,7 @@ mod tests {
 
     #[test]
     fn largest_prime_factor_is_calculated() {
-        assert_eq!(largest_prime_factor(13_195), 29);
+        assert_eq!(largest_prime_factor(13_195), Some(29));
     }
 
     #[test]
@@ -46,6 +46,6 @@ mod tests {
 
     #[test]
     fn p003() {
-        assert_eq!(largest_prime_factor(600_851_475_143), 6_857);
+        assert_eq!(largest_prime_factor(600_851_475_143), Some(6_857));
     }
 }
