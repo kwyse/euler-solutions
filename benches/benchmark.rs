@@ -17,7 +17,7 @@ fn benchmark(c: &mut Criterion) {
         b.iter(|| largest_prime_factor(black_box(600_851_475_143)))
     });
     c.bench_function("p004", |b| {
-        b.iter(|| largest_palindrome(black_box(800..1000)))
+        b.iter(|| largest_palindrome(black_box(1), black_box(1000)))
     });
     c.bench_function("p005", |b| {
         b.iter(|| smallest_multiple(black_box(1), black_box(20)))

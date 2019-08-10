@@ -5,18 +5,35 @@
 //!
 //! Find the largest palindrome made from the product of two 3-digit numbers.
 
-use std::ops::Range;
+pub fn largest_palindrome(lo: u32, hi: u32) -> u32 {
+    let mut largest = 0;
 
-pub fn largest_palindrome(range: Range<u32>) -> u32 {
-    range
-        .clone()
-        .flat_map(|n| range.clone().map(move |m| n * m))
-        .filter(|n| {
-            let s = n.to_string();
-            s.chars().rev().collect::<String>() == s
-        })
-        .max()
-        .unwrap_or(0)
+    for n in (lo..hi).rev() {
+        let mut m = hi;
+
+        while m >= n {
+            let product = n * m;
+            if product < largest {
+                break;
+            } else if product == reverse(product) {
+                largest = product;
+            }
+
+            m -= 1;
+        }
+    }
+
+    largest
+}
+
+fn reverse(mut n: u32) -> u32 {
+    let mut reversed = 0;
+    while n > 0 {
+        reversed = (10 * reversed) + (n % 10);
+        n /= 10;
+    }
+
+    reversed
 }
 
 #[cfg(test)]
@@ -25,11 +42,11 @@ mod tests {
 
     #[test]
     fn largest_palindrome_is_found() {
-        assert_eq!(largest_palindrome(80..100), 9009);
+        assert_eq!(largest_palindrome(1, 100), 9009);
     }
 
     #[test]
     fn p004() {
-        assert_eq!(largest_palindrome(800..1_000), 906_609);
+        assert_eq!(largest_palindrome(1, 1_000), 906_609);
     }
 }
