@@ -14,7 +14,7 @@
 /// Guass' method involves observing that each number in a sequence ending with
 /// an even number can be paired. For example, for _n_ = 6:
 ///
-/// ```
+/// ```text
 /// 1 + 6 = 7
 /// 2 + 5 = 7
 /// 3 + 4 = 7
@@ -25,7 +25,7 @@
 ///
 /// For sequences that end in an odd number, pad the sequence with a zero:
 ///
-/// ```
+/// ```text
 /// 0 + 5 = 5
 /// 1 + 4 = 5
 /// 2 + 3 = 5
