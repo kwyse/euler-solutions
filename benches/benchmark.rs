@@ -1,10 +1,11 @@
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use criterion::{black_box, criterion_group, criterion_main};
+use criterion::{Criterion, ParameterizedBenchmark};
 
 use euler_solutions::p001::sum_of_multiples;
 use euler_solutions::p002::sum_of_even_value_fibs;
 use euler_solutions::p003::largest_prime_factor;
 use euler_solutions::p004::largest_palindrome;
-use euler_solutions::p005::lcm;
+use euler_solutions::p005::{lcm, product_of_minimal_prime_factors};
 
 fn benchmark(c: &mut Criterion) {
     c.bench_function("p001", |b| {
@@ -19,9 +20,17 @@ fn benchmark(c: &mut Criterion) {
     c.bench_function("p004", |b| {
         b.iter(|| largest_palindrome(black_box(100), black_box(999)))
     });
-    c.bench_function("p005", |b| {
-        b.iter(|| lcm(black_box(&(1_u64..=20).collect::<Vec<_>>())))
-    });
+    c.bench(
+        "p005",
+        ParameterizedBenchmark::new(
+            "Lowest common multiple",
+            |b, i| b.iter(|| lcm(*i)),
+            vec![5, 10, 20, 30, 50, 80],
+        )
+        .with_function("Minimal prime factorization", |b, i| {
+            b.iter(|| product_of_minimal_prime_factors(*i))
+        }),
+    );
 }
 
 criterion_main!(benches);
