@@ -6,10 +6,25 @@
 //! What is the smallest positive number that is evenly divisible by all of the
 //! numbers from 1 to 20?
 
-pub fn smallest_multiple(start: u32, end: u32) -> Option<u32> {
-    (end..)
-        .step_by(end as usize)
-        .find(|n| (start..end).all(|m| n % m == 0))
+pub fn lcm(ns: &[u64]) -> u64 {
+    let mut lcm = 1;
+    for window in ns.windows(2) {
+        let (a, b) = (window[0], window[1]);
+        let window_lcm = (a * b) / gcd(a, b);
+        lcm = (lcm * window_lcm) / gcd(lcm, window_lcm);
+    }
+
+    lcm
+}
+
+fn gcd(mut a: u64, mut b: u64) -> u64 {
+    while b != 0 {
+        let tmp = b;
+        b = a % b;
+        a = tmp;
+    }
+
+    a
 }
 
 #[cfg(test)]
@@ -17,12 +32,14 @@ mod tests {
     use super::*;
 
     #[test]
-    fn smallest_multiples_are_found() {
-        assert_eq!(smallest_multiple(1, 10), Some(2_520));
+    fn lowest_common_multiple_is_calculated() {
+        let ns = (1_u64..=10).collect::<Vec<_>>();
+        assert_eq!(lcm(&ns), 2_520);
     }
 
     #[test]
     fn p005() {
-        assert_eq!(smallest_multiple(1, 20), Some(232_792_560));
+        let ns = (1_u64..=20).collect::<Vec<_>>();
+        assert_eq!(lcm(&ns), 232_792_560);
     }
 }

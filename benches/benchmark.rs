@@ -4,7 +4,7 @@ use euler_solutions::p001::sum_of_multiples;
 use euler_solutions::p002::sum_of_even_value_fibs;
 use euler_solutions::p003::largest_prime_factor;
 use euler_solutions::p004::largest_palindrome;
-use euler_solutions::p005::smallest_multiple;
+use euler_solutions::p005::lcm;
 
 fn benchmark(c: &mut Criterion) {
     c.bench_function("p001", |b| {
@@ -20,7 +20,7 @@ fn benchmark(c: &mut Criterion) {
         b.iter(|| largest_palindrome(black_box(100), black_box(999)))
     });
     c.bench_function("p005", |b| {
-        b.iter(|| smallest_multiple(black_box(1), black_box(20)))
+        b.iter(|| lcm(black_box(&(1_u64..=20).collect::<Vec<_>>())))
     });
 }
 
