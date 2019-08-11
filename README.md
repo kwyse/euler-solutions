@@ -1,4 +1,8 @@
 # Project Euler solutions
 
-Rust implementations for Project Euler problems using only the Rust standard
-library. Tests are included.
+Project Euler solutions using only the Rust standard library.
+
+## Performance
+
+[Criterion](https://crates.io/crates/criterion) is used for profiling.
+Benchmarks can be ran with `cargo bench`.
