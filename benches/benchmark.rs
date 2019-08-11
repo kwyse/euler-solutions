@@ -6,6 +6,7 @@ use euler_solutions::p002::sum_of_even_value_fibs;
 use euler_solutions::p003::largest_prime_factor;
 use euler_solutions::p004::largest_palindrome;
 use euler_solutions::p005::{lcm, product_of_minimal_prime_factors};
+use euler_solutions::p006::difference;
 
 fn benchmark(c: &mut Criterion) {
     c.bench_function("p001", |b| {
@@ -31,6 +32,7 @@ fn benchmark(c: &mut Criterion) {
             b.iter(|| product_of_minimal_prime_factors(*i))
         }),
     );
+    c.bench_function("p006", |b| b.iter(|| difference(black_box(100))));
 }
 
 criterion_main!(benches);
