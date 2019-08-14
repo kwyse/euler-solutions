@@ -5,43 +5,17 @@
 //!
 //! Find the sum of all the multiples of 3 or 5 below 1000.
 
-/// Sums the multiples of a set of numbers up to a limit
-///
-/// This makes use of Guass' method of summing numbers up to a given bound. Since
-/// the product of the input set of numbers is included in the sum twice, it must
-/// be subtracted.
-///
-/// Guass' method involves observing that each number in a sequence ending with
-/// an even number can be paired. For example, for _n_ = 6:
-///
-/// ```text
-/// 1 + 6 = 7
-/// 2 + 5 = 7
-/// 3 + 4 = 7
-/// ```
-///
-/// There are three pairs (ie. 6 / 2), so the sum is (6 + 1) * (6 / 2), or
-/// (_n_(_n_ + 1)) / 2.
-///
-/// For sequences that end in an odd number, pad the sequence with a zero:
-///
-/// ```text
-/// 0 + 5 = 5
-/// 1 + 4 = 5
-/// 2 + 3 = 5
-/// ```
-///
-/// Now the _n_ represents the sum of each pair, and the (_n_ + 1) / 2 represents
-/// the number of pairs.
-pub fn sum_of_multiples(ns: &[u32], limit: u32) -> u32 {
-    let sum_divisible_by = |n| {
-        let upper_bound = (limit - 1) / n;
-        n * (upper_bound * (upper_bound + 1)) / 2
-    };
+/// Sum all multiples of the input sequence up to a limit
+pub fn sum_all_multiples(xs: &[u32], n: u32) -> u32 {
+    let sum_multiples_for_x = |x| x * sum_to((n - 1) / x);
 
-    let sum_of_input = ns.iter().map(sum_divisible_by).sum::<u32>();
-    let sum_of_input_product = sum_divisible_by(&ns.iter().product::<u32>());
-    sum_of_input - sum_of_input_product
+    let multiples = xs.iter().map(sum_multiples_for_x).sum::<u32>();
+    let product_multiples = sum_multiples_for_x(&xs.iter().product::<u32>());
+    multiples - product_multiples
+}
+
+fn sum_to(n: u32) -> u32 {
+    (n * (n + 1)) / 2
 }
 
 #[cfg(test)]
@@ -50,11 +24,11 @@ mod tests {
 
     #[test]
     fn multiples_are_summed() {
-        assert_eq!(sum_of_multiples(&[3, 5], 10), 23);
+        assert_eq!(sum_all_multiples(&[3, 5], 10), 23);
     }
 
     #[test]
     fn p001() {
-        assert_eq!(sum_of_multiples(&[3, 5], 1_000), 233_168);
+        assert_eq!(sum_all_multiples(&[3, 5], 1_000), 233_168);
     }
 }
