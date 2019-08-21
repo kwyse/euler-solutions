@@ -17,6 +17,7 @@ script:
   - cargo test --verbose
   - cargo bench --verbose
   - mdbook build docs
+  - ls -l target/criterion/p001
   - cp -r target/criterion docs/book/benchmarks
   - ls -l docs/book/benchmarks/p001/report
 deploy:
