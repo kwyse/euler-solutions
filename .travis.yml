@@ -15,7 +15,9 @@ before_script:
 script:
   - cargo build --verbose
   - cargo test --verbose
+  - cargo bench --verbose
   - mdbook build docs
+  - cp -r target/criterion docs/book/benchmarks
 deploy:
   provider: pages
   skip-cleanup: true
