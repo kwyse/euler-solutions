@@ -8,20 +8,24 @@ matrix:
     - rust: nightly
   fast_finish: true
 cache: cargo
+
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y gnuplot
+
 before_script:
   - (test -x $HOME/.cargo/bin/cargo-install-update || cargo install cargo-update)
   - (test -x $HOME/.cargo/bin/mdbook || cargo install --vers "^0.3" mdbook)
   - cargo install-update -a
+
 script:
   - cargo build --verbose
   - cargo test --verbose
   - cargo bench --verbose
   - mdbook build docs
+  - mdbook test docs
   - cp -r target/criterion docs/book/benchmarks
-  - ls -l docs/book/benchmarks/p001
+
 deploy:
   provider: pages
   skip-cleanup: true
