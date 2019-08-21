@@ -18,11 +18,13 @@ script:
   - cargo bench --verbose
   - mdbook build docs
   - cp -r target/criterion docs/book/benchmarks
+  - ls docs/book
 deploy:
   provider: pages
   skip-cleanup: true
   github-token: $GITHUB_TOKEN
   local-dir: docs/book
   keep-history: false
+  verbose: true
   on:
     branch: master
