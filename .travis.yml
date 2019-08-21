@@ -18,7 +18,7 @@ script:
   - cargo bench --verbose
   - mdbook build docs
   - cp -r target/criterion docs/book/benchmarks
-  - ls docs/book
+  - ls -l docs/book/benchmarks/p001/report
 deploy:
   provider: pages
   skip-cleanup: true
