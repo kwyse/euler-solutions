@@ -1,6 +1,6 @@
 #[allow(dead_code)]
 fn p009() -> u64 {
-    let is_triplet = |a, b, c| a*a + b*b == c*c;
+    let is_triplet = |a, b, c| a * a + b * b == c * c;
 
     let mut triplets: Vec<(u64, u64, u64)> = Vec::new();
     let bound = 1000;
@@ -14,8 +14,10 @@ fn p009() -> u64 {
         }
     }
 
-    let (a, b, c) = *triplets.iter()
-        .find(|&&(a, b, c)| a + b + c == bound).unwrap();
+    let (a, b, c) = *triplets
+        .iter()
+        .find(|&&(a, b, c)| a + b + c == bound)
+        .unwrap();
 
     a * b * c
 }

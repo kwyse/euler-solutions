@@ -1,0 +1,11 @@
+[book]
+authors = ["Krishan Wyse"]
+multilingual = false
+src = "src"
+title = "Project Euler Solutions"
+
+[output.html]
+mathjax-support = true
+
+[output.html.playpen]
+editable = true
