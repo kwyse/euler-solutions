@@ -14,30 +14,11 @@ pub fn sum_of_even_value_fibs(limit: u32) -> u32 {
 }
 
 /// Yields even-valued Fibonacci numbers
-///
-/// Observe that the Fibonacci sequence obeys F(_n_) = 4 * F(_n_ - 3) + F(_n_ - 6):
-///
-/// F(_n_)
-/// = F(_n_ - 1) + F(_n_ - 2)
-/// = F(_n_ - 2) + F(_n_ - 3) + F(_n_ - 2)
-/// = 2 * F(_n_ - 2) + F(_n_ - 3)
-/// = 2 * (F(_n_ - 3) + F(_n_ - 4)) + F(_n_ - 3)
-/// = 3 * F(_n_ - 3) + 2 * F(_n_ - 4)
-/// = 3 * F(_n_ - 3) + F(_n_ - 4) + F(_n_ - 5) + F(_n_ - 6)
-/// = 4 * F(_n_ - 3) + F(_n_ - 6)
-///
-/// Now, observe that every third value in the Fibonacci sequence is even:
-///
-/// 1 1 *2* 3 5 *8* 13 21 *34* 55 89 *144* ...
-///
-/// Therefore, if F(_n_) = 4 * F(_n_ - 3) + F(_n_ - 6) yields values of the
-/// Fibonacci sequence, then E(_n_) = 4 * E(_n_ - 1) + E(_n_ - 2) can be used to
-/// yield the even values.
-pub struct EvenFibIter(u32, u32);
+pub struct EvenFibIter { a: u32, b: u32 }
 
 impl Default for EvenFibIter {
     fn default() -> Self {
-        Self(2, 8)
+        Self { a: 0, b: 2 }
     }
 }
 
@@ -45,9 +26,9 @@ impl Iterator for EvenFibIter {
     type Item = u32;
 
     fn next(&mut self) -> Option<Self::Item> {
-        let curr = self.0;
-        self.0 = self.1;
-        self.1 = 4 * self.1 + curr;
+        let curr = self.a;
+        self.a = self.b;
+        self.b = 4 * self.a + curr;
 
         Some(curr)
     }
@@ -66,6 +47,7 @@ mod tests {
     fn even_fibonacci_numbers_are_generated() {
         let mut fibs = EvenFibIter::default();
 
+        assert_eq!(fibs.next(), Some(0));
         assert_eq!(fibs.next(), Some(2));
         assert_eq!(fibs.next(), Some(8));
         assert_eq!(fibs.next(), Some(34));
