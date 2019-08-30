@@ -21,9 +21,9 @@ before_script:
 script:
   - cargo build --verbose
   - cargo test --verbose
-  - cargo bench --verbose
   - mdbook build docs
   - mdbook test docs
+  - cargo bench --verbose
   - cp -r target/criterion docs/book/benchmarks
 
 deploy:
