@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/kwyse/euler-solutions-rs.svg?branch=master)](https://travis-ci.org/kwyse/euler-solutions-rs)
+[![Build Status](https://travis-ci.org/kwyse/euler-solutions.svg?branch=master)](https://travis-ci.org/kwyse/euler-solutions)
 
 # Project Euler Solutions
 
