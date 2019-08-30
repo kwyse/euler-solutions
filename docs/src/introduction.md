@@ -12,5 +12,5 @@ familiarity with mathematical notation will be useful.
 Whilst every effort has been made to ensure the explanations are
 accurate and correct, you are encouraged to raise an issue on the
 [source repository](https://github.com/kwyse/euler-solutions) if you
-find a mistake. If you know this fix, a PR would be even better! Many
-thanks in advance.
+find a mistake. If you know this fix, a pull request would be even
+better! Many thanks in advance.
