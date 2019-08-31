@@ -1,0 +1,412 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Problem 002 - Project Euler Solutions</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="problems.html"><strong aria-hidden="true">2.</strong> Problems</a></li><li><ol class="section"><li><a href="p001.html"><strong aria-hidden="true">2.1.</strong> Problem 001</a></li><li><a href="p002.html" class="active"><strong aria-hidden="true">2.2.</strong> Problem 002</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">Project Euler Solutions</h1>
+
+                        <div class="right-buttons">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#problem-002" id="problem-002">Problem 002</a></h1>
+<blockquote>
+<p>Each new term in the Fibonacci sequence is generated by adding the
+previous two terms. By starting with 1 and 2, the first 10 terms
+will be:</p>
+<p>1, 2, 3, 5, 8, 13, 21, 34, 55, 89, ...</p>
+<p>By considering the terms in the Fibonacci sequence whose values do
+not exceed four million, find the sum of the even-valued terms.</p>
+</blockquote>
+<p>Let's return to the practice we established in the <a href="p001.html">first
+problem</a> and state our recurrence relation. We shall begin
+the sequence from \( 0 \) instead of \( 1 \) to ensure that our
+solution works for all natural numbers, though of course we're still
+bound by the bit widths of our integer types.</p>
+<p>\[
+\begin{align}
+\\ F_0 &amp;= 0
+\\ F_1 &amp;= 1
+\\ F_n &amp;= F_{n-1} + F_{n-2}
+\end{align}
+\]</p>
+<p>A recursive Fibonacci implementation follows from this recurrence, and
+from there it's simply a matter of calling this function with every
+natural number, filtering out values that aren't even, stopping once
+we've reached our limit value, and summing all the numbers we've
+collected.</p>
+<pre><pre class="playpen"><code class="language-rust editable">fn main() {
+    let result = (0..)
+		.filter_map(|i| Some(fib(i)).filter(|n| n % 2 == 0))
+		.take_while(|&amp;n| n &lt; 4_000_000)
+		.sum::&lt;u32&gt;();
+
+    println!(&quot;{}&quot;, result);
+}
+
+fn fib(n: u32) -&gt; u32 {
+	match n {
+		0 =&gt; 0,
+		1 =&gt; 1,
+		_ =&gt; fib(n - 1) + fib(n - 2),
+	}
+}
+</code></pre></pre>
+<p>Our Fibonacci algorithm is \( O(2^n) \), so we shouldn't expect our
+runtime to be stellar. Profiling our implementation confirms this.</p>
+<pre><code class="language-text">Lower bound:   192.39 ms
+Best estimate: 192.49 ms
+Upper bound:   192.60 ms
+</code></pre>
+<p>It could be worse, but there's definitely room for improvement.</p>
+<h2><a class="header" href="#memoization" id="memoization">Memoization</a></h2>
+<p>A clear understanding of why this Fibonacci algorithm is \( O(2^n)
+\) will illustrate where we can make improvements. Consider what our
+function calls would look like.</p>
+<p>\[
+\begin{align}
+\\ F_n &amp;= F_{n-1} + F_{n-2}, \quad &amp;\text{2 terms, } 2^1
+\\ &amp;= F_{n-2} + F_{n-3} + F_{n-3} + F_{n-4}, \quad &amp;\text{4 terms, } 2^2
+\\ &amp;= F_{n-3} + F_{n-4} + F_{n-4} + F_{n-5} + F_{n-4}
++ F_{n-5} + F_{n-5} + F_{n-6}, \quad &amp;\text{8 terms, } 2^3
+\end{align}
+\]</p>
+<p>Here, \( F_{n-3} \) is called twice on the second line, each time
+calling \( F_{n-4} \), itself which may result in the same value
+being called multiple times. Each one of these calls is a calculation
+to perform, and it's currently being done repeatedly on the same
+values.</p>
+<p>This is the problem <em>memoization</em> solves. Memoization is an
+optimisation technique. Whenever we calculate an intermediate value,
+we cache it and enable it to be used later on. We can use a <code>HashMap</code>
+for this purpose.</p>
+<pre><code class="language-rust no_run noplaypen"># use std::collections::HashMap;
+#
+fn fib(n: u32, cache: &amp;mut HashMap&lt;u32, u32&gt;) -&gt; u32 {
+    match cache.get(&amp;n) {
+        Some(ret) =&gt; *ret,
+        None =&gt; {
+            let ret = match n {
+	        0 =&gt; 0,
+	        1 =&gt; 1,
+	        _ =&gt; fib(n - 1, cache) + fib(n - 2, cache),
+            };
+
+            cache.insert(n, ret);
+            ret
+        }
+    }
+}
+</code></pre>
+<p>As expected, we see a dramatic performance increase.</p>
+<pre><code class="language-text">Lower bound:   3.6219 us
+Best estimate: 3.6337 us
+Upper bound:   3.6463 us
+</code></pre>
+<h2><a class="header" href="#reducing-time-and-space" id="reducing-time-and-space">Reducing Time And Space</a></h2>
+<p>We've reduced the <em>time</em> complexity of our Fibonacci algorithm down
+from \( O(2^n) \) to \( O(n) \), but only at the expense of space
+complexity. Whilst before we had space taken up by stack frames during
+the recursion, it's now being taken up by the <code>HashMap</code> <em>in
+addition</em>. Neither of these allocations are necessary.</p>
+<p>Consider the fact that we don't need to calculate arbitrary terms in
+the sequence. We only ever need to know the next term. To know the
+next term, we only ever need to know the two previous terms. We could
+instead create an iterative solution, removing the memory needed for
+the stack frames during recursion, and only hold the previous two
+values in memory at a given time, removing the need for the <code>HashMap</code>.</p>
+<p>Going even further, consider that we only need the even terms. Let's
+look to see if there's a pattern for when they occur.</p>
+<p>\[ \mathbf{0}, 1, 1, \mathbf{2}, 3, 5, \mathbf{8}, 13, 21,
+\mathbf{34}, 55, 89, \mathbf{144} \]</p>
+<p>It appears that every third item of the sequence is even. We can prove
+this with the laws of arithmetic.</p>
+<p>\[ even + even = even \]
+\[ odd + odd = even \]
+\[ even + odd = odd \]</p>
+<p>Given the first and second term is even and odd respectively, the
+third term must be odd, and given that, the fourth term must be even,
+and then the fifth term odd. The sequence is periodic in this respect
+because it is based on previous values. If this property exists at the
+start of the sequence, it exists for the entire sequence.</p>
+<p>Return once again to our recurrence, and observe it can be written in
+terms of every third term.</p>
+<p>\[ F_n = F_{n-1} + F_{n-2} \]
+\[ F_{3n} = F_{3n-1} + F_{3n-2} \]</p>
+<p>If we could formulate the recurrence in terms of the \( n - 3 \) and
+\( n - 6 \), we could reduce it to only care about every third term.</p>
+<p>\[
+\begin{align}
+\\ F_{3n} &amp;= \color{blue}{F_{3n-1}} + F_{3n-2}
+\\ &amp;= \color{blue}{F_{3n-2} + F_{3n - 3}} + F_{3n-2}
+\\ &amp;= 2 \cdot \color{purple}{F_{3n-2}} + F_{3n - 3}
+\\ &amp;= 2 \left(\color{purple}{F_{3n-3} + F_{3n - 4}}\right) + F_{3n-3}
+\\ &amp;= 3 \cdot F_{3n-3} + F_{3n-4} + \color{green}{F_{3n-4}}
+\\ &amp;= 3 \cdot F_{3n-3} + F_{3n-4} + \color{green}{F_{3n-5} + F_{3n-6}}
+\\ &amp;= 3 \cdot F_{3n-3} + F_{3n-3} + F_{3n-6}
+\\ &amp;= 4 \cdot F_{3n-3} + F_{3n-6}
+\end{align}
+\]</p>
+<p>Now, if we divide our indices by \( 3 \), we have a recurrence that
+yields the even-valued Fibonacci numbers.</p>
+<p>\[ E_n = 4 \cdot E_{n-1} + E_{n-2} \]</p>
+<h2><a class="header" href="#implementation" id="implementation">Implementation</a></h2>
+<p>Let's create a data structure to hold the two values we need. By
+implementing <code>Default</code>, we can seed our initial values, and by
+implementing <code>Iterator</code>, we obtain the means to manipulate the
+sequence as we please and this will simplify our solution to the
+original problem.</p>
+<pre><code class="language-rust no_run noplaypen">pub struct EvenFibIter {
+    a: u32,
+    b: u32,
+}
+
+impl Default for EvenFibIter {
+    fn default() -&gt; Self {
+        Self { a: 0, b: 2 }
+    }
+}
+
+impl Iterator for EvenFibIter {
+    type Item = u32;
+
+    fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+        let curr = self.a;
+        self.a = self.b;
+        self.b = 4 * self.a + curr;
+
+        Some(curr)
+    }
+}
+</code></pre>
+<p>This solution has a time complexity of \( O(n) \) and a space
+complexity of \( O(1) \). It is now simple to solve the problem.</p>
+<pre><code class="language-rust no_run noplaypen">pub fn sum_of_even_value_fibs(limit: u32) -&gt; u32 {
+    EvenFibIter::default().take_while(|&amp;n| n &lt; limit).sum()
+}
+#
+# pub struct EvenFibIter {
+#     a: u32,
+#     b: u32,
+# }
+# 
+# impl Default for EvenFibIter {
+#     fn default() -&gt; Self {
+#         Self { a: 0, b: 2 }
+#     }
+# }
+# 
+# impl Iterator for EvenFibIter {
+#     type Item = u32;
+# 
+#     fn next(&amp;mut self) -&gt; Option&lt;Self::Item&gt; {
+#         let curr = self.a;
+#         self.a = self.b;
+#         self.b = 4 * self.a + curr;
+# 
+#         Some(curr)
+#     }
+# }
+</code></pre>
+<p>This implementation runs in the order of nanoseconds.</p>
+<p><img src="benchmarks/p002/report/pdf.svg" alt="PDF" /></p>
+<p><a href="https://github.com/kwyse/euler-solutions/blob/master/src/p002.rs">Full source code</a></p>
+<p><a href="benchmarks/p002/report/index.html">Benchmark report</a></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="p001.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="p001.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+        <script src="ace.js" type="text/javascript" charset="utf-8"></script>
+        <script src="editor.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mode-rust.js" type="text/javascript" charset="utf-8"></script>
+        <script src="theme-dawn.js" type="text/javascript" charset="utf-8"></script>
+        <script src="theme-tomorrow_night.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
