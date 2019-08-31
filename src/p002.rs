@@ -14,7 +14,10 @@ pub fn sum_of_even_value_fibs(limit: u32) -> u32 {
 }
 
 /// Yields even-valued Fibonacci numbers
-pub struct EvenFibIter { a: u32, b: u32 }
+pub struct EvenFibIter {
+    a: u32,
+    b: u32,
+}
 
 impl Default for EvenFibIter {
     fn default() -> Self {
