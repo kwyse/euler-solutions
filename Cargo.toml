@@ -4,10 +4,13 @@ authors = ["Krishan Wyse <kwysek@gmail.com>"]
 version = "0.1.0"
 edition = "2018"
 
+[lib]
+bench = false
+
 [dependencies]
 
 [dev-dependencies]
-criterion = "0.2"
+criterion = "0.3"
 
 [[bench]]
 name = "benchmark"
