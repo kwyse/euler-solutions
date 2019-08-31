@@ -32,7 +32,7 @@ fn benchmark(c: &mut Criterion) {
     }
     p005.finish();
 
-    c.bench_function("p006", |b| b.iter(|| difference(black_box(100))));
+    c.bench_function("p006", |b| b.iter(|| difference(100)));
 }
 
 criterion_main!(benches);
