@@ -1,9 +1,17 @@
-* Problem 1
-  :PROPERTIES:
-  :header-args: :tangle src/solutions/p001.rs
-  :END:
+#+HUGO_BASE_DIR: ./
 
-** Description
+* Project Euler
+** Problem 1: Multiples of 3 and 5
+   :PROPERTIES:
+   :header-args: :tangle src/solutions/p001.rs
+   :EXPORT_FILE_NAME: p001
+   :END:
+
+Sequence summation for numbers up to a given _N_.
+
+#+hugo: more
+
+*** Description
 #+begin_quote
 If we list all the natural numbers below 10 that are multiples of 3 or 5, we get
 3, 5, 6 and 9. The sum of these multiples is 23.
@@ -11,14 +19,14 @@ If we list all the natural numbers below 10 that are multiples of 3 or 5, we get
 Find the sum of all the multiples of 3 or 5 below 1000.
 #+end_quote
 
-** Iterative solution
+*** Iterative solution
 #+begin_src rust
 solve!(p001, iterative, 1_000, |n| -> i128 {
     (3..n).filter(|m| m % 3 == 0 || m % 5 == 0).sum()
 });
 #+end_src
 
-** Closed form solution
+*** Closed form solution
 #+begin_src rust
 fn sum_to(n: u128) -> u128 {
     (n * (n + 1)) / 2
@@ -34,7 +42,7 @@ solve!(p001, closed, 1_000, |n| -> i128 {
 });
 #+end_src
 
-** Benchmarks
+*** Benchmarks
 #+name: p001_benchmark
 #+begin_src rust :tangle no
 bench!(p001, "p001", Logarithmic,
@@ -43,6 +51,8 @@ bench!(p001, "p001", Logarithmic,
        closed -> "closed form"
 );
 #+end_src
+
+[[/images/p001_comparison.svg]]
 
 * Appendix A: Benchmark files
 #+begin_src rust :noweb yes :tangle benches/benchmark.rs
