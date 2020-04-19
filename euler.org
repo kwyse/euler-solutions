@@ -18,19 +18,36 @@ solve!(p001, iterative, 1_000, |n| -> i128 {
 });
 #+end_src
 
+** Closed form solution
+#+begin_src rust
+fn sum_to(n: u128) -> u128 {
+    (n * (n + 1)) / 2
+}
+
+solve!(p001, closed, 1_000, |n| -> i128 {
+    let sum_multiples = |x| x * sum_to((n as u128 - 1) / x);
+
+    let multiples = &[3, 5].iter().map(sum_multiples).sum();
+    let product_multiples = sum_multiples(&[3, 5].iter().product());
+
+    (multiples - product_multiples) as i128
+});
+#+end_src
+
 ** Benchmarks
 #+name: p001_benchmark
 #+begin_src rust :tangle no
-bench!(p001, "p001",
-       1_000,
+bench!(p001, "p001", Logarithmic,
+       100 500 1_000 5_000 10_000,
        iterative -> "iterative"
+       closed -> "closed form"
 );
 #+end_src
 
 * Appendix A: Benchmark files
 #+begin_src rust :noweb yes :tangle benches/benchmark.rs
 use criterion::{criterion_group, criterion_main};
-use criterion::{BenchmarkId, Criterion};
+use criterion::{AxisScale, BenchmarkId, Criterion, PlotConfiguration};
 
 criterion_main!(benches);
 criterion_group! {
@@ -41,8 +58,12 @@ criterion_group! {
 
 fn benchmark(c: &mut Criterion) {
     macro_rules! bench {
-        ( $problem_id: ident, $group:expr, $( $inputs:expr )*, $( $method:ident -> $method_description:expr )* ) => {
+        ( $problem_id:ident, $group:expr, $axis_scale:ident, $( $inputs:expr )*, $( $method:ident -> $method_description:expr )* ) => {
             let mut $problem_id = c.benchmark_group($group);
+
+            let plot_config = PlotConfiguration::default().summary_scale(AxisScale::$axis_scale);
+            $problem_id.plot_config(plot_config);
+
             for size in [ $( $inputs, )* ].iter() {
                 $(
                     $problem_id.bench_with_input(
