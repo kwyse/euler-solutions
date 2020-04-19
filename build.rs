@@ -1,29 +1,24 @@
-use std::fmt::Write;
-use std::fs::{self, File};
-use std::io::{self, Write as IoWrite};
-use std::path::Path;
+use std::ffi::OsStr;
+use std::fs::{self, OpenOptions};
+use std::io::{self, Write};
 
-const PROBLEMS_DIR: &'static str = "src/problems";
+fn main() -> io::Result<()> {
+    let mut solutions_file = OpenOptions::new()
+        .write(true)
+        .truncate(true)
+        .open("src/solutions/mod.rs")?;
 
-fn main() {
-    let dest_path = Path::new(PROBLEMS_DIR).join("mod.rs");
-    let mut problems_mod = File::create(&dest_path).unwrap();
-
-    let contents = mod_contents().unwrap();
-    problems_mod.write_all(contents.as_bytes()).unwrap();
-}
-
-fn mod_contents() -> io::Result<String> {
-    let mut contents = String::new();
-    for entry in fs::read_dir(PROBLEMS_DIR)? {
+    for entry in fs::read_dir("src/solutions")? {
         let entry = entry?;
-        let mod_path = entry.path();
-        let mod_name = mod_path.file_stem().unwrap().to_str().unwrap();
-
-        if mod_name != "mod" {
-            writeln!(&mut contents, "pub mod {};", mod_name).unwrap();
+        if let Some(file_name) = entry
+            .path()
+            .file_stem()
+            .and_then(OsStr::to_str)
+            .filter(|&file_name| file_name != "mod")
+        {
+            solutions_file.write_all(format!("pub mod {};\n", file_name).as_bytes())?;
         }
     }
 
-    Ok(contents)
+    Ok(())
 }

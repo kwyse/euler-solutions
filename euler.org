@@ -1,0 +1,67 @@
+* Problem 1
+  :PROPERTIES:
+  :header-args: :tangle src/solutions/p001.rs
+  :END:
+
+** Description
+#+begin_quote
+If we list all the natural numbers below 10 that are multiples of 3 or 5, we get
+3, 5, 6 and 9. The sum of these multiples is 23.
+
+Find the sum of all the multiples of 3 or 5 below 1000.
+#+end_quote
+
+** Iterative solution
+#+begin_src rust
+solve!(p001, iterative, 1_000, |n| -> i128 {
+    (3..n).filter(|m| m % 3 == 0 || m % 5 == 0).sum()
+});
+#+end_src
+
+** Benchmarks
+#+name: p001_benchmark
+#+begin_src rust :tangle no
+bench!(p001, "p001",
+       1_000,
+       iterative -> "iterative"
+);
+#+end_src
+
+* Appendix A: Benchmark files
+#+begin_src rust :noweb yes :tangle benches/benchmark.rs
+use criterion::{criterion_group, criterion_main};
+use criterion::{BenchmarkId, Criterion};
+
+criterion_main!(benches);
+criterion_group! {
+    name = benches;
+    config = Criterion::default().noise_threshold(0.1);
+    targets = benchmark
+}
+
+fn benchmark(c: &mut Criterion) {
+    macro_rules! bench {
+        ( $problem_id: ident, $group:expr, $( $inputs:expr )*, $( $method:ident -> $method_description:expr )* ) => {
+            let mut $problem_id = c.benchmark_group($group);
+            for size in [ $( $inputs, )* ].iter() {
+                $(
+                    $problem_id.bench_with_input(
+                        BenchmarkId::new($method_description, size),
+                        size,
+                        |b, i| b.iter(|| euler_solutions::solutions::$problem_id::$method(*i))
+                    );
+                )*
+            }
+
+            $problem_id.finish();
+        };
+    }
+
+    <<benchmark_entries>>
+}
+#+end_src
+
+#+name: benchmark_entries
+#+begin_src rust :noweb yes
+<<p001_benchmark>>
+#+end_src

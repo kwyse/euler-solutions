@@ -4,10 +4,8 @@ authors = ["Krishan Wyse <kwysek@gmail.com>"]
 version = "0.1.0"
 edition = "2018"
 
-[lib]
-bench = false
-
 [dependencies]
+paste = "0.1"
 
 [dev-dependencies]
 criterion = "0.3"
