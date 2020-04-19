@@ -1,4 +1,4 @@
-![Build and test](https://github.com/kwyse/euler-solutions/workflows/ci/badge.svg?branch=source)
+[![Build and test](https://github.com/kwyse/euler-solutions/workflows/ci/badge.svg?branch=source)](https://github.com/kwyse/euler-solutions/actions)
 
 # Project Euler Solutions
 
