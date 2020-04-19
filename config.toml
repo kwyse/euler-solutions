@@ -10,5 +10,8 @@ noClasses = false
 [params]
 style = "light"
 
+[params.math]
+enable = true 
+
 [params.syntax]
 theme = "xcode"

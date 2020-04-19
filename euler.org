@@ -96,3 +96,9 @@ fn benchmark(c: &mut Criterion) {
 #+begin_src rust :noweb yes
 <<p001_benchmark>>
 #+end_src
+
+* Footnotes
+* COMMENT Local Variables                          :ARCHIVE:
+# Local Variables:
+# eval: (org-hugo-auto-export-mode)
+# End:
