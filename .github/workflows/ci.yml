@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Setup emacs
         uses: purcell/setup-emacs@master
         with:
@@ -18,8 +21,8 @@ jobs:
       - name: Tangle files
         run: emacs ./euler.org --batch --eval='(org-babel-tangle)' --kill
 
-      - uses: actions/checkout@v2
       - name: Build
         run: cargo build --verbose
+
       - name: Test
         run: cargo test --verbose
