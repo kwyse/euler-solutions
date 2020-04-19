@@ -1,5 +1,6 @@
 target
 Cargo.lock
+content/
 docs/book
 src/problems/mod.rs
 src/solutions/
