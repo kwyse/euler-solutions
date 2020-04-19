@@ -1,0 +1,14 @@
+baseURL = "https://localhost.com"
+title = "Project Euler Solutions"
+theme = "hugo-notepadium"
+copyright = "© 2020 Krishan Wyse"
+
+[markup.highlight]
+codeFences = true
+noClasses = false
+
+[params]
+style = "light"
+
+[params.syntax]
+theme = "xcode"

@@ -1,0 +1,28 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - literate-org
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup emacs
+        uses: purcell/setup-emacs@master
+        with:
+          version: 26.3
+
+      - name: Tangle files
+        run: emacs ./euler.org --batch --eval='(org-babel-tangle)' --kill
+
+      - name: Build
+        run: cargo build --verbose
+
+      - name: Test
+        run: cargo test --verbose

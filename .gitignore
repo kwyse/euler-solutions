@@ -2,3 +2,4 @@ target
 Cargo.lock
 docs/book
 src/problems/mod.rs
+src/solutions/
