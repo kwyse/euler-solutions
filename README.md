@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/kwyse/euler-solutions.svg?branch=master)](https://travis-ci.org/kwyse/euler-solutions)
+![Build and test](https://github.com/kwyse/euler-solutions/workflows/ci/badge.svg?branch=source)
 
 # Project Euler Solutions
 
