@@ -2,6 +2,7 @@ baseURL = "https://www.kwyse.com/euler-solutions"
 title = "Project Euler Solutions"
 theme = "hugo-notepadium"
 copyright = "© 2020 Krishan Wyse"
+relativeURLs = true
 
 [markup.highlight]
 codeFences = true
