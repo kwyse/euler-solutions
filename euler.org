@@ -8,7 +8,7 @@
    :EXPORT_FILE_NAME: p001
    :END:
 
-Sequence summation for numbers up to a given _N_.
+Sequence summation for multiples of numbers from one to /n/
 
 #+hugo: more
 
@@ -21,39 +21,188 @@ Find the sum of all the multiples of 3 or 5 below 1000.
 #+end_quote
 
 *** Iterative solution
+A naive, albeit effective for this input size, method to solve this would be to
+iterate from 1 to /n/, skip numbers that are not multiples of three and five,
+and sum the remaining set of numbers.  Starting at three rather than one is a
+trivial but appropriate improvement.
+
 #+begin_src rust
 solve!(p001, iterative, 1_000, |n| -> i128 {
     (3..n).filter(|m| m % 3 == 0 || m % 5 == 0).sum()
 });
 #+end_src
 
+This solution scales linearly with the input size.
+
 *** Closed form solution
+We can implement a closed form solution with some number theory.  A closed form
+solution is one that scales in constant time with respect to the input.
+
+The first step is to find an efficient way to sum consecutive numbers, beginning
+from one.  Let's take \(n = 6\) as an example.
+
+\[ \sum_{i=1}^6 i = 1 + 2 + 3 + 4 + 5 + 6 \]
+
+Observe that we can pair these numbers up \(\frac{n}{2}\) times and that they
+all equal \(n + 1\).
+
+\[
+1 + 6 = 7 \newline
+2 + 5 = 7 \newline
+3 + 4 = 7 \newline
+\]
+
+For odd numbers, let's say \(n = 7\), add a pair including zero.
+
+\[
+0 + 7 = 7 \newline
+1 + 6 = 7 \newline
+2 + 5 = 7 \newline
+3 + 4 = 7
+\]
+
+Now there are \(\frac{n + 1}{2}\) pairs and each pair adds up to \(n\).  The
+result is the same because of the distributive property in arithmetic.
+
+\[ \frac{n}{2} \cdot (n + 1) \equiv \frac{n + 1}{2} \cdot n \]
+
+We now want to formerly prove this so we can apply the formula for any value of
+\(n\).
+
+\[ S_n = \frac{n(n + 1)}{2}, \quad \text{for } n \in \natnums_0 \]
+
+A statement like this is known as a proposition.  One way to prove a proposition
+is with mathematical induction on recurrence relations.  Recurrence relations
+are equations that define a given term \(n\) in terms of a previous term.  By
+definition, they are recursive, so a base case must also be defined.
+
+\[\begin{aligned}
+S_0 &= 0
+\\\ S_n &= S_{n - 1} + n, \quad \text{for } n \in \natnums_1
+\end{aligned}\]
+
+The truth of these equations is self-evident.  To prove the proposition, we
+substitute it into these equations.
+
+\[\begin{aligned}
+S_0 &= 0
+\\\ &= \frac{0 \cdot (0 + 1)}{2} \newline \newline
+\\\[2em] S_n &= S_{n - 1} + n
+\\\ &= \frac{(n - 1)((n - 1) + 1)}{2} + n
+\end{aligned}\]
+
+The first equation holds.  The second one holds only if we can arrive back to
+the proposition algebraically.
+
+\[\begin{aligned}
+S_n &= \frac{(n - 1)((n - 1) + 1)}{2} + n
+\\\ &= \frac{(n - 1)(n)}{2} + \frac{2n}{2}
+\\\ &= \frac{n(n - 1) + 2n}{2}
+\\\ &= \frac{n(n - 1 + 2)}{2}
+\\\ &= \frac{n(n + 1)}{2}
+\end{aligned}\]
+
+Since the second equation holds, we have found the closed form solution and can
+now implement this without a looping construct.
+
+But of course, the problem wants us to sum multiples.  For example, the sum of
+multiples of five up to and including thirty.
+
+\[\begin{aligned}
+M_6(30, 5) &= 5 + 10 + 15 + 20 + 25 + 30
+\\\ &= 105
+\end{aligned}\]
+
+It's important to recognise that \(n\) represents the number of terms here, not
+the limit value that we want to sum the multiples to.  If we denote the limit
+value \(l = 30\) and the difference between each term \(d = 5\), then \(n =
+\tfrac{l}{d} = 6\).
+
+Just as important, note that \(d\) can be factored out of the sequence.
+
+\[\begin{aligned}
+M_6(30, 5) &= 5(1 + 2 + 3 + 4 + 5 + 6)
+\\\ &= 105
+\end{aligned}\]
+
+We can use our existing knowledge of \(S_n\) here.
+
+\[
+M_n(l, d) = d \cdot S_{\frac{l}{d}}
+\]
+
+Let's write a new proposition in terms of \(n\) to prepare for our proof.
+
+\[\begin{aligned}
+M_{n}(l, d) &= d \cdot S_{\frac{l}{d}}
+\\\ &= d \cdot \frac{\tfrac{l}{d}(\tfrac{l}{d} + 1)}{2}
+\\\ &= d \cdot \frac{n(n + 1)}{2}
+\\\ &= \frac{nd(n + 1)}{2}
+\end{aligned}\]
+
+Defining the new recurrence in terms of \(n\) simplifies it.
+
+\[\begin{aligned}
+M_0(l, d) &= 0
+\\\ M_n(l,d) &= M_{n-1} + nd, \quad \text{for } n \in \natnums_1, d \in \natnums_1
+\end{aligned}\]
+
+The proof is once again by mathematical induction.
+
+\[\begin{aligned}
+M_{0}(l, d) &= 0
+\\\ &= \frac{0 \cdot d \cdot (0 + 1)}{2}
+\\\[1em]
+\\\ M_{n}(l, d) &= M_{n-1} + nd
+\\\ &= \frac{(n - 1) \cdot d \cdot ((n - 1) + 1)}{2} + \frac{2nd}{2}
+\\\ &= \frac{d(n - 1)(n) + 2nd}{2}
+\\\ &= \frac{nd(n - 1) + 2nd}{2}
+\\\ &= \frac{nd(n - 1 + 2)}{2}
+\\\ &= \frac{nd(n + 1)}{2}
+\end{aligned}\]
+
+Since the equations hold, let's rewrite our solution in terms of \(l\) and
+\(d\) as these are the inputs to our implementation.
+
+\[\begin{aligned}
+M_{n}(l, d) &= d \cdot \frac{\tfrac{l}{d}(\tfrac{l}{d} + 1)}{2}
+\\\ &= \frac{l(\tfrac{l}{d} + 1)}{2}
+\\\ &= \frac{l(\tfrac{l + d}{d})}{2}
+\\\ &= \frac{l(l + d)}{2d}
+\end{aligned}\]
+
+And with that, we can finally implement a closed form solution.
+
 #+begin_src rust
-fn sum_to(n: u128) -> u128 {
-    (n * (n + 1)) / 2
-}
+solve!(p001, closed, 1_000, |exclusive_limit| -> i128 {
+    let sum_multiples = |difference| {
+        let limit = difference * ((exclusive_limit - 1) / difference);
+        (limit * (limit + difference)) / (2 * difference)
+    };
 
-solve!(p001, closed, 1_000, |n| -> i128 {
-    let sum_multiples = |x| x * sum_to((n as u128 - 1) / x);
+    let sum_of_multiples = &[3, 5].iter().map(sum_multiples).sum();
+    let sum_of_product_multiples = sum_multiples(&(3 * 5));
 
-    let multiples = &[3, 5].iter().map(sum_multiples).sum();
-    let product_multiples = sum_multiples(&[3, 5].iter().product());
-
-    (multiples - product_multiples) as i128
+    (sum_of_multiples - sum_of_product_multiples) as i128
 });
 #+end_src
 
-*** Benchmarks
-#+name: p001_benchmark
-#+begin_src rust :tangle no
-bench!(p001, "p001", Logarithmic,
-       100 500 1_000 5_000 10_000,
-       iterative -> "iterative"
-       closed -> "closed form"
-);
-#+end_src
+Take care to decrement the limit value since the problem statement asks for
+multiples /up to/ one thousand.  Dividing and then multiplying by =difference=
+ensures =limit= is a multiple of =difference=.  Once the multiples of three and
+five are summed, the answer will include the multiples of their product twice,
+so the sum of multiples of fifteen is calculated separately and subtracted from
+the answer.
+
+*** Comparison
+The closed form solution runs in constant time in contrast with the iterative
+solution that scales linearly with the size of the limit value.
 
 [[/images/p001_comparison.svg]]
+
+With limit values in the thousands or lower, the iterative solution still
+completes in microseconds.  With far larger limit values, the delay would begin
+to become noticeable.
 
 * Appendix A: Benchmark files
 #+begin_src rust :noweb yes :tangle benches/benchmark.rs
@@ -94,8 +243,12 @@ fn benchmark(c: &mut Criterion) {
 #+end_src
 
 #+name: benchmark_entries
-#+begin_src rust :noweb yes
-<<p001_benchmark>>
+#+begin_src rust
+bench!(p001, "p001", Linear,
+       10 100 500 1_000 3_000,
+       iterative -> "iterative"
+       closed -> "closed form"
+);
 #+end_src
 
 * Footnotes
