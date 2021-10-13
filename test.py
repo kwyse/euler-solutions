@@ -8,15 +8,20 @@ from solve import TestFailedError
 
 
 def run_all():
-    print(Fore.RESET + "Project Euler Solutions")
-    paths = Path("./project_euler/").glob(r"p*.py")
-    with Pool() as pool:
-        pool.map(_run, (f"project_euler.{path.stem}" for path in paths))
-
     print(Fore.RESET + "Advent of Code Solutions")
     paths = Path("./advent_of_code/").glob(r"20*.py")
     with Pool() as pool:
         pool.map(_run, (f"advent_of_code.{path.stem}" for path in paths))
+
+    print(Fore.RESET + "HackerRank Solutions")
+    paths = Path("./hacker_rank/").glob(r"*[!_].py")
+    with Pool() as pool:
+        pool.map(_run, (f"hacker_rank.{path.stem}" for path in paths))
+
+    print(Fore.RESET + "Project Euler Solutions")
+    paths = Path("./project_euler/").glob(r"p*.py")
+    with Pool() as pool:
+        pool.map(_run, (f"project_euler.{path.stem}" for path in paths))
 
 
 def _run(module):
