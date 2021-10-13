@@ -16,18 +16,18 @@ def _run_all(argv):
         if module:
             modules = [arg]
         else:
-            modules = _build_module_paths(package, r"*[!_].py")
+            modules = _build_module_paths(package)
     else:
-        modules = _build_module_paths("advent_of_code", r"20*.py")
-        modules.extend(_build_module_paths("hacker_rank", r"*[!_].py"))
-        modules.extend(_build_module_paths("project_euler", r"p*.py"))
+        modules = _build_module_paths("advent_of_code")
+        modules.extend(_build_module_paths("hacker_rank"))
+        modules.extend(_build_module_paths("project_euler"))
 
     with Pool() as pool:
         pool.map(_run, modules)
 
 
-def _build_module_paths(package, pattern):
-    paths = Path(f"./{package}/").glob(pattern)
+def _build_module_paths(package):
+    paths = Path(f"./{package}").glob(r"*[!_].py")
     return [f"{package}.{path.stem}" for path in paths]
 
 
