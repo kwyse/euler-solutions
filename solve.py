@@ -1,6 +1,14 @@
-def solve(*, expected: int):
+from pathlib import Path
+
+
+def solve(*, expected: int, resource=None, data_dir=None):
     def inner(func) -> None:
-        actual = func()
+        if resource:
+            with open(Path().resolve().joinpath(data_dir).joinpath(resource)) as f:
+                data = f.read()
+                actual = func(data)
+        else:
+            actual = func()
 
         try:
             assert actual == expected
