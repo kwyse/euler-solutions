@@ -8,7 +8,7 @@ from colorama import Fore
 from solve import TestFailedError
 
 
-def _run_all(argv):
+def __run_all(argv):
     if len(argv) > 1:
         _, arg, *_ = argv
         package, *module = arg.split(".")
@@ -16,34 +16,37 @@ def _run_all(argv):
         if module:
             modules = [arg]
         else:
-            modules = _build_module_paths(package)
+            modules = __build_module_paths(package)
     else:
-        modules = _build_module_paths("advent_of_code")
-        modules.extend(_build_module_paths("hacker_rank"))
-        modules.extend(_build_module_paths("project_euler"))
+        modules = __build_module_paths("advent_of_code")
+        modules.extend(__build_module_paths("hacker_rank"))
+        modules.extend(__build_module_paths("project_euler"))
 
     with Pool() as pool:
-        pool.map(_run, modules)
+        pool.map(__run, modules)
 
 
-def _build_module_paths(package):
+def __build_module_paths(package):
     paths = Path(f"./{package}").glob(r"*[!_].py")
     return [f"{package}.{path.stem}" for path in paths]
 
 
-def _run(module):
+def __run(module):
     try:
         import_module(module)
         print(Fore.GREEN + f"- Solution {module} passed ✓")
     except TestFailedError as e:
-        error(f"! Solution {module} failed; expected: {e.expected}, got: {e.actual}", e)
+        __error(f"! Solution {module} failed; expected: {e.expected}, got: {e.actual}")
     except Exception as e:
-        error(f"! Solution {module} failed to compile with error:", e)
+        __error(f"! Solution {module} failed to compile with error:", e)
 
 
-def error(msg, e):
-    print(Fore.RED + msg, e)
+def __error(msg, e=None):
+    if e:
+        print(Fore.RED + msg, e)
+    else:
+        print(Fore.RED + msg)
 
 
 if __name__ == "__main__":
-    _run_all(argv)
+    __run_all(argv)

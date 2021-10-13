@@ -3,7 +3,14 @@ from math import ceil, floor
 from . import solve
 
 
-@solve(expected=633, resource="fraud_notifications.txt")
+@solve(
+    test_cases=[
+        {"data": "5 4\n1 2 3 4 4", "expected": 0},
+        {"data": "9 5\n2 3 4 2 3 6 8 4 5", "expected": 2},
+        {"data": "5 3\n10 20 30 40 50", "expected": 1},
+        {"data_resource": "fraud_notifications_1.txt", "expected": 633},
+    ]
+)
 def num_notifications(data):
     [first_line, expenditure] = data.split("\n")
     _, days = first_line.split()
