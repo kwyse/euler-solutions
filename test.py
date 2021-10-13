@@ -1,16 +1,26 @@
 from importlib import import_module
 from multiprocessing import Pool
 from pathlib import Path
+from sys import argv
 
 from colorama import Fore
 
 from solve import TestFailedError
 
 
-def run_all():
-    modules = _build_module_paths("advent_of_code", r"20*.py")
-    modules.extend(_build_module_paths("hacker_rank", r"*[!_].py"))
-    modules.extend(_build_module_paths("project_euler", r"p*.py"))
+def _run_all(argv):
+    if len(argv) > 1:
+        _, arg, *_ = argv
+        package, *module = arg.split(".")
+
+        if module:
+            modules = [arg]
+        else:
+            modules = _build_module_paths(package, r"*[!_].py")
+    else:
+        modules = _build_module_paths("advent_of_code", r"20*.py")
+        modules.extend(_build_module_paths("hacker_rank", r"*[!_].py"))
+        modules.extend(_build_module_paths("project_euler", r"p*.py"))
 
     with Pool() as pool:
         pool.map(_run, modules)
@@ -36,4 +46,4 @@ def error(msg, e):
 
 
 if __name__ == "__main__":
-    run_all()
+    _run_all(argv)
