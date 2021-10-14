@@ -34,11 +34,11 @@ def __build_module_paths(package):
 def __run(module):
     try:
         import_module(module)
-        print(Fore.GREEN + f"- Solution {module} passed ✓")
+        print(Fore.GREEN + f"- {module} passed ✓")
     except TestFailedError as e:
-        __error(f"! Solution {module} failed; expected: {e.expected}, got: {e.actual}")
+        __error(f"! {module} failed; expected: {e.expected!r}, got: {e.actual!r}")
     except Exception as e:
-        __error(f"! Solution {module} failed to compile with error:", e)
+        __error(f"! {module} failed to compile with error:", e)
 
 
 def __error(msg, e=None):
