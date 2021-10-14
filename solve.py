@@ -9,7 +9,7 @@ def solve(*, expected=None, resource=None, data_dir=None, test_cases=None):
     def inner(func) -> None:
         if test_cases:
             for test_case in test_cases:
-                if data_resource := test_case.get("data_resource"):
+                if data_resource := test_case.get("resource"):
                     data = __read_resource(data_resource)
                     actual = func(data)
                 else:
