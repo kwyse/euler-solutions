@@ -1,4 +1,4 @@
-from itertools import pairwise
+from itertools import pairwise, tee
 
 from . import solve
 
@@ -28,6 +28,16 @@ def part1(data):
     return len([s for s in data.splitlines() if is_nice(s)])
 
 
+def triplewise(iterable):
+    a, b, c = tee(iterable, 3)
+    next(b, None)
+    next(c, None)
+    next(c, None)
+
+    for a, (b, c) in zip(a, zip(b, c)):
+        yield a, b, c
+
+
 @solve(expected=53, resource="2015_day5.txt")
 def part2(data):
     def is_nice(s):
@@ -35,9 +45,7 @@ def part2(data):
         repeating_split_letter = False
 
         pairs = {s[:2]: 1}
-        for i, l in enumerate(s[:-2]):
-            m, r = s[i + 1 : i + 3]
-
+        for i, (l, m, r) in enumerate(triplewise(s)):
             pair = m + r
             if found := pairs.get(pair):
                 if found != i + 1:
@@ -48,6 +56,9 @@ def part2(data):
             if l == r:
                 repeating_split_letter = True
 
-        return non_overlapping_pair and repeating_split_letter
+            if non_overlapping_pair and repeating_split_letter:
+                return True
+        
+        return False
 
     return len([s for s in data.splitlines() if is_nice(s)])
