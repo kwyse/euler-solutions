@@ -4,3 +4,5 @@ content/
 docs/book
 src/problems/mod.rs
 src/solutions/
+.venv/
+__pycache__/
